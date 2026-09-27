@@ -28,6 +28,7 @@ def get_mission(mission_id:str)->dict:
 def request_sensitive_action(action:str,reason:str,mission_id:str|None=None,risk:str="high")->dict:
     """Create an approval request; never execute the consequential action."""
     from uuid import UUID
+
     from nexus.models import Risk
     mid=UUID(mission_id) if mission_id else None
     return orchestrator.approval(action,reason,mid,Risk(risk)).model_dump(mode="json")
