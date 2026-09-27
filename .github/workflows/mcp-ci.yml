@@ -1,0 +1,18 @@
+name: MCP CI
+on:
+  push:
+    paths: ["server.js","package.json","Dockerfile",".github/workflows/mcp-ci.yml"]
+  pull_request:
+    paths: ["server.js","package.json","Dockerfile"]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm install
+      - run: npm run check
+      - run: docker build -t nexus-100-mcp:test .
