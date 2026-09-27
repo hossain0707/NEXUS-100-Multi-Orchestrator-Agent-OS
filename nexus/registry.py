@@ -19,11 +19,13 @@ class AgentRegistry:
                 aid=f"A{n:03d}"
                 self.agents[aid]=AgentSpec(id=aid,name=f"{domain.title()} {cap.replace('_',' ').title()} Agent",domain=domain,capabilities=[cap])
                 n+=1
-    def by_domain(self,domain): return [a for a in self.agents.values() if a.domain==domain]
+    def by_domain(self, domain):
+        return [agent for agent in self.agents.values() if agent.domain == domain]
     def best(self,domain,capability=None):
         agents=self.by_domain(domain)
         if capability:
             for a in agents:
-                if capability in a.capabilities: return a
+                if capability in a.capabilities:
+                    return a
         return agents[0]
 registry=AgentRegistry()
