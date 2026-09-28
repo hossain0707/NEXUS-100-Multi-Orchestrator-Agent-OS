@@ -6,9 +6,9 @@ from nexus.persistence import init_db
 
 
 @pytest.mark.asyncio
-async def test_executor_without_provider_is_safe():
+async def test_queue_for_chatgpt_does_not_fake_execution():
     await init_db()
     mission = orchestrator.plan("Research an LLM")
-    result = await executor.execute(mission)
-    assert result.status.value == "completed"
-    assert all(step.status.value == "completed" for step in result.route)
+    result = await executor.queue_for_client(mission)
+    assert result.status.value == "queued"
+    assert all(step.status.value == "planned" for step in result.route)
