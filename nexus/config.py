@@ -8,9 +8,6 @@ class Settings(BaseSettings):
     api_token: str | None = None
     database_url: str = "sqlite+aiosqlite:///./nexus.db"
     redis_url: str | None = None
-    llm_base_url: str = "https://api.openai.com/v1"
-    llm_api_key: str | None = None
-    llm_model: str = "gpt-5.6"
     github_token: str | None = None
     max_orchestrator_hops: int = 10
     max_agent_depth: int = 6
