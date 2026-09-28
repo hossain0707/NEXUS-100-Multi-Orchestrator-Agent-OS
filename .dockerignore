@@ -1,7 +1,8 @@
-node_modules
-npm-debug.log
 .git
 .github
 .env
-*.md
-index.html
+__pycache__
+.pytest_cache
+.ruff_cache
+*.pyc
+node_modules
