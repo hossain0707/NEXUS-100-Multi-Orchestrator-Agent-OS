@@ -5,11 +5,13 @@ from fastapi import FastAPI
 from nexus import __version__
 from nexus.api import router
 from nexus.mcp_server import mcp
+from nexus.persistence import init_db
 from nexus.security import SecurityMiddleware
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await init_db()
     async with mcp.session_manager.run():
         yield
 
@@ -29,3 +31,8 @@ app.mount("/mcp", mcp.streamable_http_app())
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": "nexus-100-agent-os", "version": __version__}
+
+
+@app.get("/ready")
+async def ready():
+    return {"status": "ready"}

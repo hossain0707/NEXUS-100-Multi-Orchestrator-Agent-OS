@@ -1,8 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from nexus.executor import executor
 from nexus.memory import memory
 from nexus.orchestrator import orchestrator
+from nexus.persistence import load_mission, save_mission
 from nexus.registry import registry
 
 router = APIRouter(prefix="/api/v1")
@@ -24,12 +26,22 @@ async def agents():
 
 @router.post("/missions")
 async def create_mission(body: MissionIn):
-    return orchestrator.start(body.objective, body.priority, body.dry_run)
+    mission = orchestrator.start(body.objective, body.priority, body.dry_run)
+    await save_mission(mission)
+    return mission
+
+
+@router.post("/missions/{mission_id}/execute")
+async def execute_mission(mission_id: str):
+    mission = await load_mission(mission_id)
+    if not mission:
+        raise HTTPException(404, "Mission not found")
+    return await executor.execute(mission)
 
 
 @router.get("/missions/{mission_id}")
 async def get_mission(mission_id: str):
-    mission = memory.missions.get(mission_id)
+    mission = await load_mission(mission_id)
     if not mission:
         raise HTTPException(404, "Mission not found")
     return mission
