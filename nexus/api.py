@@ -31,12 +31,13 @@ async def create_mission(body: MissionIn):
     return mission
 
 
-@router.post("/missions/{mission_id}/execute")
-async def execute_mission(mission_id: str):
+@router.post("/missions/{mission_id}/queue")
+async def queue_mission(mission_id: str):
+    """Queue a planned mission for an MCP client such as ChatGPT."""
     mission = await load_mission(mission_id)
     if not mission:
         raise HTTPException(404, "Mission not found")
-    return await executor.execute(mission)
+    return await executor.queue_for_client(mission)
 
 
 @router.get("/missions/{mission_id}")
