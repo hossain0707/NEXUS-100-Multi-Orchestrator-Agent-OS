@@ -1,11 +1,333 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>NEXUS-100 Agent OS</title><style>
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#18386b,#071020 42%,#040812 75%);color:#eef6ff;font:14px system-ui}main{max-width:1500px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center}.top h1{margin:0}.cyan{color:#59e7ff}.muted,small{color:#8294b7}.pill,.box,.node{border:1px solid #20385d;background:#0a1428;border-radius:12px}.pill{padding:7px 10px;color:#63f2ad}.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin:15px 0}.stat{padding:11px}.stat b{display:block;font-size:20px}.stat small{font-size:9px;text-transform:uppercase}.layout{display:grid;grid-template-columns:250px 1fr 300px;gap:10px}.box{padding:12px}.domains{display:grid;gap:6px}.domain{padding:9px;border:1px solid #1d3558;border-radius:8px;cursor:pointer}.domain:hover{border-color:#59e7ff}.domain span{float:right;color:#63f2ad}.stage{min-height:700px;overflow:hidden;background:radial-gradient(circle at 50% 42%,#162b5488,transparent 42%)}.flow{height:100%;display:flex;flex-direction:column;align-items:center;padding:20px 14px}.node{position:relative;padding:10px;text-align:center;min-width:125px}.node b{font-size:10px}.node small{display:block;font-size:8px}.meta{min-width:230px;border-color:#9a7cff}.bus{min-width:230px;border-color:#59e7ff}.memory{min-width:210px;border-color:#63f2ad}.arrow{height:28px;display:flex;align-items:center;justify-content:center;color:#59e7ff;font-size:20px}.pulseArrow{animation:glow 1.2s ease-in-out infinite alternate}@keyframes glow{to{text-shadow:0 0 12px #59e7ff}}.fan,.merge{width:92%;display:flex;align-items:center;gap:10px;color:#7087a8;font-size:8px;letter-spacing:1.2px;margin:10px 0}.fan span,.merge span{height:1px;background:#29496f;flex:1}.orchGrid{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.orchGrid .node{width:100%;min-height:78px;border-color:#29496f;transition:.25s;opacity:.9}.orchGrid .node.hot{border-color:#59e7ff!important;box-shadow:0 0 22px #59e7ff55;opacity:1}.orchGrid .node.dim{opacity:.24}.merge{margin-top:14px}.routeStatus{width:92%;display:flex;align-items:center;justify-content:center;gap:8px;min-height:28px;margin:2px 0 8px;color:#8294b7;font-size:9px}.routeStatus b{color:#eef6ff}.routeStatus .dot{width:7px;height:7px;border-radius:50%;background:#59e7ff;box-shadow:0 0 10px #59e7ff}.routeStatus.active .dot{animation:blink .7s infinite alternate}@keyframes blink{to{opacity:.25}}.routeMap{width:92%;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:0 0 10px}.routeChip{border:1px solid #29496f;border-radius:999px;padding:4px 8px;font-size:8px;color:#8294b7}.routeChip.on{border-color:#59e7ff;color:#eef6ff;background:#0c2638;box-shadow:0 0 12px #59e7ff33}.routeChip.done{border-color:#3d8b70;color:#63f2ad;background:#0d2924}.legend{width:92%;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;color:#8294b7;font-size:8px;margin:4px 0}.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}.lActive{background:#59e7ff}.lDone{background:#63f2ad}.lIdle{background:#29496f}.agents{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:5px}.a{font-size:7px;border:1px solid #28476f;border-radius:4px;padding:2px}.on{color:#63f2ad;border-color:#3d8b70}.hot{box-shadow:0 0 28px #59e7ff88;border-color:#59e7ff!important}svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.line{fill:none;stroke:#29496f;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}.pulse{stroke:#59e7ff;stroke-dasharray:5 7;animation:d 1s linear infinite}@keyframes d{to{stroke-dashoffset:-24}}input,select,button{width:100%;padding:8px;margin:4px 0;background:#071020;color:#eef6ff;border:1px solid #28476f;border-radius:8px}button{cursor:pointer}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:5px}.queue{max-height:210px;overflow:auto}.task{border-left:3px solid #59e7ff;background:#081326;padding:7px;margin:5px 0;border-radius:6px;font-size:10px}.approval{border-left-color:#ffcb6b}.log{height:245px;overflow:auto;background:#040a14;padding:8px;border-radius:8px;font:9px monospace;line-height:1.7}.green{color:#63f2ad}.amber{color:#ffcb6b}@media(max-width:1000px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}} </style></head><body><main>
-<div class="top"><div><h1><span class="cyan">NEXUS-100</span> Multi-Orchestrator Agent OS</h1><small>Hierarchical orchestration • capability routing • 100 specialists • governed autonomy</small></div><div class="pill">● CONTROL PLANE HEALTHY</div></div>
-<div class="stats"><div class="box stat"><b>100</b><small>Registered Agents</small></div><div class="box stat"><b>10</b><small>Orchestrators</small></div><div class="box stat"><b id="active">18</b><small>Active Workers</small></div><div class="box stat"><b id="tasks">42</b><small>Tasks Today</small></div><div class="box stat"><b id="ap">2</b><small>Approvals</small></div><div class="box stat"><b>99.98%</b><small>Control Health</small></div></div>
-<div class="layout"><section class="box"><b>DOMAIN CONTROL</b><small style="float:right">10 × 10</small><div id="domains" class="domains" style="margin-top:12px"></div><br><b>GOVERNANCE</b><div class="task">RBAC + TOOL SCOPES<br><small>Least privilege</small></div><div class="task">BUDGET GOVERNOR<br><small>Cost · tokens · hops · retries</small></div><div class="task approval">HUMAN APPROVAL<br><small>Writes · deploy · external action</small></div><div class="task">AUDIT + TRACE<br><small>Full task lineage</small></div></section>
-<section class="box stage" id="stage"><div class="flow"><div id="meta" class="node meta"><b>🧠 META ORCHESTRATOR</b><small>understand • plan • route • reconcile</small></div><div class="arrow pulseArrow">↓</div><div id="bus" class="node bus"><b>⚡ GLOBAL EVENT BUS</b><small>typed events • correlation • backpressure</small></div><div class="fan"><span></span><b>DOMAIN ROUTING</b><span></span></div><div id="routeStatus" class="routeStatus"><span class="dot"></span><b>Ready</b><span>— select Run Mission to see the route</span></div><div id="routeMap" class="routeMap"></div><div class="legend"><span><i class="lActive"></i>Executing</span><span><i class="lDone"></i>Completed</span><span><i class="lIdle"></i>Idle</span></div><div id="orchGrid" class="orchGrid"></div><div class="merge"><span></span><b>RESULTS + EVENTS</b><span></span></div><div class="arrow">↓</div><div id="mem" class="node memory"><b>💾 MEMORY FABRIC</b><small>task • domain • semantic • audit</small></div></div></section>
-<section><div class="box"><b>MISSION CONTROL</b><input value="Investigate an LLM method, estimate GPU needs, implement and validate it"><select><option>High Priority</option></select><div class="buttons"><button onclick="run()">▶ Run Mission</button><button onclick="cross()">↔ Cross-Domain</button><button onclick="schedule()">⏱ Schedule</button><button onclick="approve()">✓ Approval</button></div></div><div class="box" style="margin-top:10px"><b>ACTIVE TASK GRAPH</b><div id="q" class="queue"><div class="task">READY<br><small>Submit a mission to create a routed task graph.</small></div></div></div><div class="box" style="margin-top:10px"><b>LIVE EVENT STREAM</b><div id="log" class="log"></div></div></section></div></main>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NEXUS-100 adaptive multi-orchestrator AI Agent OS live architecture dashboard">
+<title>NEXUS-100 · Adaptive AI Agent OS</title>
+<style>
+:root{
+  --bg:#050816;--panel:#0a1020;--panel2:#0d1629;--line:#213454;--line2:#31547e;
+  --text:#eef6ff;--muted:#8192b2;--cyan:#58e8ff;--green:#62f2ad;--purple:#a98bff;
+  --amber:#ffd27a;--red:#ff7c91;--shadow:0 24px 80px rgba(0,0,0,.34)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(51,105,194,.42),transparent 36%),
+    radial-gradient(circle at 10% 40%,rgba(67,232,255,.08),transparent 28%),
+    radial-gradient(circle at 88% 56%,rgba(169,139,255,.07),transparent 24%),
+    var(--bg);min-height:100vh
+}
+button,input,textarea,select{font:inherit}
+.shell{max-width:1600px;margin:auto;padding:22px}
+.header{display:flex;gap:18px;justify-content:space-between;align-items:center;margin-bottom:15px}
+.brand h1{margin:0;font-size:24px;letter-spacing:-.45px}.brand h1 span{color:var(--cyan)}
+.brand p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.health{display:flex;align-items:center;gap:9px;border:1px solid #25456a;background:rgba(7,19,37,.78);padding:10px 13px;border-radius:999px;white-space:nowrap}
+.health i{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 14px currentColor}.health.ok i{background:var(--green)}
+.health b{font-size:11px}.health small{color:var(--muted);font-size:9px}
+.metrics{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-bottom:11px}
+.card,.panel,.metric{border:1px solid var(--line);background:linear-gradient(180deg,rgba(13,22,41,.94),rgba(8,15,30,.94));border-radius:14px;box-shadow:0 1px rgba(255,255,255,.02) inset}
+.metric{padding:11px 12px}.metric b{font-size:19px;display:block}.metric small{color:var(--muted);text-transform:uppercase;font-size:8px;letter-spacing:.85px}
+.metric .good{color:var(--green)}.metric .cyan{color:var(--cyan)}
+.grid{display:grid;grid-template-columns:260px minmax(540px,1fr) 370px;gap:10px;align-items:start}
+.panel{padding:13px}.title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.title b{font-size:11px;letter-spacing:.75px}.title small{font-size:8px;color:var(--muted)}
+.domains{display:grid;gap:6px}.domain{border:1px solid #1d3558;border-radius:9px;padding:9px 10px;transition:.2s;cursor:pointer;background:rgba(6,14,28,.48)}
+.domain:hover,.domain.active{border-color:var(--cyan);background:#0a2034;box-shadow:0 0 20px rgba(88,232,255,.08)}
+.domain b{font-size:10px}.domain span{float:right;color:var(--green);font-size:8px}.domain small{color:var(--muted);font-size:8px}
+.gov{margin-top:12px}.govItem{border-left:2px solid var(--cyan);padding:7px 8px;background:#081326;margin:5px 0;border-radius:6px;font-size:9px}.govItem.approval{border-color:var(--amber)}.govItem small{color:var(--muted)}
+.stage{min-height:790px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 36%,rgba(37,74,135,.28),transparent 40%),linear-gradient(180deg,rgba(8,15,31,.9),rgba(4,9,20,.95))}
+.flow{padding:18px;display:flex;flex-direction:column;align-items:center}
+.node{border:1px solid var(--line2);background:rgba(9,20,40,.94);border-radius:11px;padding:9px 14px;text-align:center;min-width:220px;transition:.25s}
+.node b{font-size:10px;letter-spacing:.45px}.node small{display:block;color:var(--muted);font-size:8px;margin-top:3px}
+.node.meta{border-color:var(--purple)}.node.catalog{border-color:var(--cyan)}.node.router{border-color:var(--green)}
+.node.hot{box-shadow:0 0 26px rgba(88,232,255,.27);border-color:var(--cyan);transform:translateY(-1px)}
+.arrow{height:24px;display:flex;align-items:center;color:var(--cyan);font-size:18px}.arrow.live{animation:pulse 1s infinite alternate}@keyframes pulse{to{opacity:.35}}
+.flowLabel{width:94%;display:flex;gap:10px;align-items:center;margin:10px 0 8px;color:#7890b4;font-size:8px;letter-spacing:1.4px}.flowLabel:before,.flowLabel:after{content:"";height:1px;background:#254467;flex:1}
+.modelStrip{width:94%;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px}
+.modelTier{border:1px solid #29496f;background:#08152a;border-radius:9px;padding:8px;text-align:center}.modelTier strong{display:block;font-size:9px}.modelTier small{color:var(--muted);font-size:7px}.modelTier.selected{border-color:var(--green);box-shadow:0 0 18px rgba(98,242,173,.12)}
+.orchGrid{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.orch{border:1px solid #274263;background:rgba(7,17,33,.88);border-radius:10px;padding:9px;transition:.2s;min-height:71px}.orch.dim{opacity:.22}.orch.active{border-color:var(--cyan);box-shadow:0 0 18px rgba(88,232,255,.12)}.orch.done{border-color:#397f6a}
+.orchTop{display:flex;justify-content:space-between;gap:8px}.orchTop b{font-size:9px}.orchTop small{font-size:7px;color:var(--muted)}
+.agents{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;margin-top:6px}.agentDot{height:5px;border-radius:3px;background:#1c3455}.orch.active .agentDot:first-child{background:var(--cyan);box-shadow:0 0 8px rgba(88,232,255,.7)}.orch.done .agentDot:first-child{background:var(--green)}
+.execution{width:94%;display:grid;gap:6px}.execRow{display:grid;grid-template-columns:70px 1.1fr 1fr .75fr .8fr;gap:6px;align-items:center;border:1px solid #213a5c;background:#071326;border-radius:9px;padding:7px 8px;font-size:8px}.execRow b{font-size:8px}.tag{display:inline-flex;align-items:center;justify-content:center;border:1px solid #31547e;border-radius:999px;padding:3px 6px;color:#b8c7e1;white-space:nowrap}.tag.fast{border-color:#366579;color:#7be8ff}.tag.balanced{border-color:#50699b;color:#a9c3ff}.tag.strong{border-color:#6656a2;color:#c7baff}.tag.premium{border-color:#8d6636;color:#ffd27a}.tag.effort{border-color:#35765e;color:var(--green)}
+.verify{width:94%;display:grid;grid-template-columns:1fr 1fr;gap:7px}.verify .node{min-width:0}
+.sideStack{display:grid;gap:10px}.mission textarea{width:100%;min-height:92px;resize:vertical;background:#071020;color:var(--text);border:1px solid #28476f;border-radius:9px;padding:9px;outline:none}.mission textarea:focus{border-color:var(--cyan)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}.mission select,.mission button{width:100%;padding:8px;border-radius:8px;border:1px solid #28476f;background:#071020;color:var(--text);margin-top:6px}.mission button{cursor:pointer}.mission button.primary{background:linear-gradient(180deg,#123552,#0b263d);border-color:#3b7da4}.mission button:hover{border-color:var(--cyan)}
+.strategy{display:grid;gap:6px}.strategyItem{border:1px solid #243d60;background:#071326;border-radius:9px;padding:8px}.strategyHead{display:flex;justify-content:space-between;gap:8px;align-items:center}.strategyHead b{font-size:9px}.strategyItem small{color:var(--muted);font-size:8px}.kv{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:5px}.kv span{background:#0b1a31;border-radius:5px;padding:4px 5px;font-size:7px;color:#aec0de}.kv span b{color:var(--text);font-size:7px}
+.log{height:205px;overflow:auto;background:#040914;border:1px solid #182c48;border-radius:9px;padding:8px;font:8px ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.65}.log div{border-bottom:1px solid rgba(31,58,91,.35);padding:2px 0}.green{color:var(--green)}.amber{color:var(--amber)}.cyan{color:var(--cyan)}.muted{color:var(--muted)}
+.bench{display:grid;grid-template-columns:1fr 1fr;gap:6px}.benchCard{background:#071326;border:1px solid #223b5e;border-radius:8px;padding:8px}.benchCard b{font-size:15px}.benchCard small{display:block;color:var(--muted);font-size:7px}
+.footer{color:#7386a8;text-align:center;font-size:8px;padding:13px 0 2px}
+@media(max-width:1180px){.grid{grid-template-columns:220px 1fr}.sideStack{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}.metrics{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:820px){.shell{padding:12px}.header{align-items:flex-start;flex-direction:column}.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.sideStack{grid-template-columns:1fr}.modelStrip{grid-template-columns:repeat(2,1fr)}.orchGrid{grid-template-columns:1fr}.execution{width:100%}.execRow{grid-template-columns:1fr 1fr}.execRow .wide{grid-column:1/-1}.stage{min-height:auto}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <div class="brand">
+      <h1><span>NEXUS-100</span> Adaptive Multi-Orchestrator Agent OS</h1>
+      <p>100 specialist agents · dynamic model catalog · adaptive reasoning budgets · bounded escalation · governed autonomy</p>
+    </div>
+    <div id="health" class="health"><i></i><div><b>CHECKING LIVE RUNTIME</b><br><small id="healthText">Cloud Run · connecting…</small></div></div>
+  </header>
+
+  <section class="metrics">
+    <div class="metric"><b id="mAgents">100</b><small>Registered Agents</small></div>
+    <div class="metric"><b id="mDomains">10</b><small>Domain Orchestrators</small></div>
+    <div class="metric"><b class="cyan" id="mCatalog">—</b><small>Catalog Models</small></div>
+    <div class="metric"><b class="good" id="mAdaptive">ON</b><small>Adaptive Routing</small></div>
+    <div class="metric"><b id="mBackend">OFF</b><small>Backend Inference</small></div>
+    <div class="metric"><b>0.916</b><small>NEXUS Routing F1</small></div>
+    <div class="metric"><b>100%</b><small>Governance Accuracy</small></div>
+  </section>
+
+  <div class="grid">
+    <aside class="panel">
+      <div class="title"><b>DOMAIN CONTROL</b><small>10 × 10 SPECIALISTS</small></div>
+      <div id="domains" class="domains"></div>
+      <div class="gov">
+        <div class="title"><b>GOVERNANCE</b><small>ALWAYS ON</small></div>
+        <div class="govItem"><b>POLICY ENGINE</b><br><small>read · analyze · propose</small></div>
+        <div class="govItem"><b>BUDGET GOVERNOR</b><br><small>model · effort · tokens · retries</small></div>
+        <div class="govItem approval"><b>HUMAN APPROVAL</b><br><small>write · deploy · spend · external action</small></div>
+        <div class="govItem"><b>AUDIT + TRACE</b><br><small>mission · agent · model · usage lineage</small></div>
+      </div>
+    </aside>
+
+    <main class="panel stage">
+      <div class="flow">
+        <div id="meta" class="node meta"><b>META ORCHESTRATOR</b><small>understand objective · route domains · preserve mission context</small></div>
+        <div class="arrow live">↓</div>
+        <div id="difficulty" class="node"><b>TASK + DIFFICULTY ANALYZER</b><small>complexity · risk · cross-domain depth · priority</small></div>
+        <div class="arrow">↓</div>
+        <div id="catalog" class="node catalog"><b>DYNAMIC MODEL CATALOG</b><small>discover exact provider model IDs · capability · speed · cost · specialization</small></div>
+        <div class="flowLabel">MODEL POLICY</div>
+        <div class="modelStrip">
+          <div class="modelTier" data-tier="fast"><strong>FAST</strong><small>low cost · low latency</small></div>
+          <div class="modelTier" data-tier="balanced"><strong>BALANCED</strong><small>normal analysis</small></div>
+          <div class="modelTier" data-tier="strong"><strong>STRONG</strong><small>complex engineering</small></div>
+          <div class="modelTier" data-tier="premium"><strong>PREMIUM</strong><small>highest difficulty</small></div>
+        </div>
+        <div id="router" class="node router"><b>ADAPTIVE MODEL + EFFORT ROUTER</b><small>exact model · low/medium/high/extra-high · token budget · fallback chain</small></div>
+        <div class="flowLabel">DOMAIN + AGENT ROUTING</div>
+        <div id="orchGrid" class="orchGrid"></div>
+        <div class="flowLabel">PER-AGENT EXECUTION PLAN</div>
+        <div id="execution" class="execution"><div class="execRow"><span class="muted">Waiting</span><span class="wide">Analyze a mission to see exact routing and model allocation.</span></div></div>
+        <div class="flowLabel">QUALITY + GOVERNANCE</div>
+        <div class="verify">
+          <div id="verifyNode" class="node"><b>VERIFIER / CRITIC</b><small>confidence · contradictions · missing work · quality gate</small></div>
+          <div id="escalateNode" class="node"><b>BOUNDED ESCALATION</b><small>only move to stronger models when needed · max 2 by default</small></div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="node"><b>FINAL SYNTHESIS + AUDIT</b><small>merge agent outputs · policy check · token telemetry · trace</small></div>
+      </div>
+    </main>
+
+    <aside class="sideStack">
+      <section class="panel mission">
+        <div class="title"><b>MISSION INSPECTOR</b><small>LIVE STRATEGY PREVIEW</small></div>
+        <textarea id="objective">Research an 8B LLM deployment, estimate GPU cost, design the engineering plan, and review security risks.</textarea>
+        <div class="row">
+          <select id="priority"><option value="normal">Normal priority</option><option value="high">High priority</option><option value="critical">Critical priority</option></select>
+          <button id="analyzeBtn" class="primary" onclick="analyzeMission()">Analyze Mission</button>
+        </div>
+        <div class="row">
+          <button onclick="simulateEscalation()">Simulate Escalation</button>
+          <button onclick="resetView()">Reset View</button>
+        </div>
+        <small id="modeNote" class="muted">This preview performs no paid model inference.</small>
+      </section>
+
+      <section class="panel">
+        <div class="title"><b>SELECTED STRATEGY</b><small id="policy">adaptive-model-v2-catalog</small></div>
+        <div id="strategy" class="strategy"><div class="strategyItem"><small>Run Analyze Mission to inspect selected domains, agents, exact model IDs, effort levels and token budgets.</small></div></div>
+      </section>
+
+      <section class="panel">
+        <div class="title"><b>LIVE EVENT STREAM</b><small>DEMO TRACE</small></div>
+        <div id="log" class="log"></div>
+      </section>
+
+      <section class="panel">
+        <div class="title"><b>BENCHMARK SNAPSHOT</b><small>ROUTING ONLY</small></div>
+        <div class="bench">
+          <div class="benchCard"><b>0.916</b><small>NEXUS MACRO F1</small></div>
+          <div class="benchCard"><b>70%</b><small>NEXUS EXACT MATCH</small></div>
+          <div class="benchCard"><b>0.983</b><small>CHATGPT BASELINE F1</small></div>
+          <div class="benchCard"><b>95%</b><small>CHATGPT EXACT MATCH</small></div>
+        </div>
+        <p class="muted" style="font-size:8px;margin:8px 0 0">Current benchmark measures routing, not general intelligence. The adaptive model layer is designed to improve efficiency and controlled execution, not to claim a stronger base model.</p>
+      </section>
+    </aside>
+  </div>
+
+  <div class="footer">NEXUS-100 · GitHub Pages architecture console · live runtime status from Cloud Run · read-only strategy preview</div>
+</div>
+
 <script>
-const D=[["Research","papers · LLM · patents"],["Engineering","code · test · DevOps"],["Business","market · product · ops"],["Data & Knowledge","RAG · ETL · analytics"],["Infrastructure","GPU · cloud · K8s"],["Security","threat · audit · incident"],["Productivity","mail · docs · calendar"],["Finance","budget · invoice · cost"],["Career","jobs · CV · interview"],["Personal","travel · learning · life"]],dom=document.getElementById("domains"),orchGrid=document.getElementById("orchGrid");
-D.forEach((x,i)=>{dom.innerHTML+=`<div class=domain onclick="flash('o${i}')"><b>${String(i+1).padStart(2,"0")} ${x[0]}</b><span>●</span><br><small>${x[1]}</small></div>`;let n=document.createElement("div");n.id="o"+i;n.className="node";n.innerHTML=`<b>${x[0]} ORCH.</b><small>10 specialists</small><div class=agents>${Array.from({length:10},(_,j)=>`<i class="a ${j<2?"on":""}">A${i*10+j+1}</i>`).join("")}</div>`;orchGrid.appendChild(n)});const routeStatus=document.getElementById("routeStatus"),routeMap=document.getElementById("routeMap");function route(names,active=-1,done=[]){routeMap.innerHTML=names.map((n,i)=>`<span class="routeChip ${i===active?"on":done.includes(i)?"done":""}">${i+1}. ${n}</span>`).join('<span class="cyan">→</span>');document.querySelectorAll(".orchGrid .node").forEach((n,i)=>{n.classList.remove("dim","hot");let idx=names.findIndex(x=>D[i][0].startsWith(x));if(idx<0)n.classList.add("dim");if(idx===active)n.classList.add("hot")})}function status(a,b,live=true){routeStatus.className="routeStatus"+(live?" active":"");routeStatus.innerHTML=`<span class=dot></span><b>${a}</b><span>— ${b}</span>`}function flash(id){let e=document.getElementById(id);e.classList.add("hot");setTimeout(()=>e.classList.remove("hot"),800)}function msg(x,k=""){log.innerHTML=`<div class=${k}>${new Date().toLocaleTimeString()}  ${x}</div>`+log.innerHTML}function task(a,b,k=""){q.innerHTML+=`<div class="task ${k}"><b>${a}</b><br><small>${b}</small></div>`}const wait=x=>new Promise(r=>setTimeout(r,x));async function run(){q.innerHTML="";const R=["Research","Infrastructure","Engineering","Security"];route(R,0,[]);status("Research","finding and assessing the method");flash("meta");msg("mission.accepted → route: Research → Infrastructure → Engineering → Security","green");task("T-101 RESEARCH","Assess candidate method");await wait(800);route(R,1,[0]);status("Infrastructure","estimating GPU and serving requirements");task("T-102 INFRA","Estimate GPU requirements");msg("Research completed → handoff to Infrastructure","green");await wait(800);route(R,2,[0,1]);status("Engineering","designing, implementing and testing");task("T-103 ENGINEERING","Architecture → implementation → test");msg("Infrastructure completed → handoff to Engineering","green");await wait(800);route(R,3,[0,1,2]);status("Security","reviewing execution and deployment boundary");task("T-104 SECURITY","Review execution boundary");msg("Engineering completed → handoff to Security","green");await wait(800);route(R,-1,[0,1,2,3]);status("Approval required","all routed domains completed; deployment is paused",false);task("T-105 APPROVAL","Deployment paused for human approval","approval");ap.textContent=3;active.textContent=0;tasks.textContent=47;msg("route complete → policy gate awaiting human approval","amber")}function cross(){const R=["Research","Infrastructure"];route(R,1,[0]);status("Cross-domain handoff","Research requested gpu_estimation from Infrastructure");flash("bus");msg("Research → Event Bus → Infrastructure","green")}function schedule(){task("SCHEDULE","Recurring mission persisted");status("Scheduled","mission stored for recurring execution",false);msg("scheduler.created interval=3600s","green")}function approve(){ap.textContent=2;status("Approved","deployment may continue",false);document.querySelectorAll(".orchGrid .node").forEach(n=>n.classList.remove("dim","hot"));routeMap.innerHTML='<span class="routeChip done">Mission route completed ✓</span>';msg("approval.granted → execution resumed","green");flash("meta")}msg("control_plane.ready — 100 specialists registered","green");msg("policy_engine.enforced — consequential writes gated");
-</script></body></html>
+const API="https://nexus-100-multi-orchestrator-agent-os-393741258321.asia-northeast3.run.app";
+const D=[
+["research","Research","papers · LLM · benchmarking"],
+["engineering","Engineering","code · API · test · DevOps"],
+["business","Business","market · product · strategy"],
+["data","Data & Knowledge","RAG · ETL · vector · analytics"],
+["infrastructure","Infrastructure","GPU · cloud · K8s · serving"],
+["security","Security","threat · audit · hardening"],
+["productivity","Productivity","mail · docs · meetings"],
+["finance","Finance","budget · cost · forecasting"],
+["career","Career","jobs · CV · interview"],
+["personal","Personal","travel · learning · life admin"]
+];
+const DOMAIN_INDEX=Object.fromEntries(D.map((x,i)=>[x[0],i]));
+const FALLBACK_CAP={research:"literature_search",engineering:"architecture",business:"market_research",data:"rag",infrastructure:"gpu",security:"threat_analysis",productivity:"summaries",finance:"budgeting",career:"jobs",personal:"planning"};
+let lastPlan=null,lastStatus=null,escalated=false;
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
+function logEvent(text,cls=""){const l=document.getElementById("log");const t=new Date().toLocaleTimeString();l.innerHTML='<div class="'+cls+'">'+esc(t)+"  "+esc(text)+"</div>"+l.innerHTML}
+function initDomains(){
+  const left=document.getElementById("domains"),grid=document.getElementById("orchGrid");
+  D.forEach((x,i)=>{
+    left.innerHTML+=`<div class="domain" id="d-${x[0]}"><b>${String(i+1).padStart(2,"0")} ${x[1]}</b><span>● ONLINE</span><br><small>${x[2]}</small></div>`;
+    grid.innerHTML+=`<div class="orch dim" id="o-${x[0]}"><div class="orchTop"><b>${x[1].toUpperCase()} ORCH.</b><small>10 specialists</small></div><div class="agents">${Array.from({length:10},()=>'<i class="agentDot"></i>').join("")}</div></div>`;
+  });
+}
+function setHealth(ok,text){
+  const h=document.getElementById("health");h.classList.toggle("ok",ok);
+  h.querySelector("b").textContent=ok?"LIVE RUNTIME HEALTHY":"RUNTIME CHECK LIMITED";
+  document.getElementById("healthText").textContent=text;
+}
+async function checkRuntime(){
+  try{
+    const r=await fetch(API+"/status",{cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const s=await r.json();lastStatus=s;
+    document.getElementById("mAgents").textContent=s.agents;
+    document.getElementById("mDomains").textContent=s.domains;
+    document.getElementById("mCatalog").textContent=s.model_catalog_size;
+    document.getElementById("mAdaptive").textContent=s.adaptive_model_routing?"ON":"OFF";
+    document.getElementById("mBackend").textContent=s.backend_model_execution?"ON":"OFF";
+    document.getElementById("modeNote").textContent=s.backend_model_execution
+      ?"Backend model execution is enabled; this dashboard preview itself remains read-only."
+      :"Recommendation mode: backend paid inference is currently disabled.";
+    setHealth(true,`Cloud Run · v${s.version} · catalog ${s.model_catalog_size}`);
+    logEvent("runtime.status → healthy · adaptive routing "+(s.adaptive_model_routing?"enabled":"disabled"),"green");
+  }catch(e){
+    setHealth(false,"Dashboard reachable · live API unavailable or deploying");
+    document.getElementById("mCatalog").textContent="—";
+    logEvent("runtime.status unavailable → using local architecture preview","amber");
+  }
+}
+function fallbackStrategy(objective,priority){
+  const t=objective.toLowerCase(),keys={
+    research:["research","paper","study","llm","benchmark"],
+    engineering:["code","build","implement","api","software","debug","test"],
+    business:["market","business","product","customer","strategy"],
+    data:["data","rag","dataset","vector","analytics"],
+    infrastructure:["gpu","cloud","deploy","server","kubernetes","latency"],
+    security:["security","risk","threat","vulnerability","audit"],
+    productivity:["summary","meeting","document","presentation","email"],
+    finance:["cost","budget","finance","forecast","expense"],
+    career:["job","career","resume","cv","interview"],
+    personal:["travel","shopping","personal","household"]
+  };
+  let domains=Object.entries(keys).filter(([_,a])=>a.some(k=>t.includes(k))).map(x=>x[0]).slice(0,5);
+  if(!domains.length)domains=["research","productivity"];
+  if((t.includes("deploy")||t.includes("production")||t.includes("code"))&&!domains.includes("security"))domains.push("security");
+  domains=domains.slice(0,5);
+  let score=.12+(domains.length>1?Math.min(.24,.08*(domains.length-1)):0)+(priority!=="normal"?.08:0);
+  ["architecture","benchmark","debug","distributed","evaluate","production","research","security","threat","tradeoff"].forEach(k=>{if(t.includes(k))score+=.055});
+  score=Math.min(1,score);
+  const effort=score<.30?"low":score<.58?"medium":score<.82?"high":"extra_high";
+  const tier=score<.30?"fast":score<.58?"balanced":score<.82?"strong":"premium";
+  const budget={low:800,medium:1600,high:3200,extra_high:6000}[effort];
+  return {
+    route:domains.map((d,i)=>({order:i+1,domain:d,orchestrator:d+" Orchestrator",agent_id:"A"+String(DOMAIN_INDEX[d]*10+1).padStart(3,"0"),capability:FALLBACK_CAP[d]})),
+    model_strategy:{policy:"adaptive-model-v2-catalog",catalog_models:lastStatus?.model_catalog_size||0,decisions:domains.map((d,i)=>({agent_id:"A"+String(DOMAIN_INDEX[d]*10+1).padStart(3,"0"),domain:d,capability:FALLBACK_CAP[d],tier:d==="security"&&tier==="balanced"?"strong":tier,model:(d==="security"&&tier==="balanced"?"strong":tier),reasoning_effort:effort,max_output_tokens:budget,complexity_score:+score.toFixed(3),confidence:.78,escalation_models:[],rationale:["local dashboard fallback"],selection_source:"tier-fallback"}))}
+  };
+}
+function clearHighlights(){
+  document.querySelectorAll(".domain").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".orch").forEach(x=>{x.classList.remove("active","done");x.classList.add("dim")});
+  document.querySelectorAll(".modelTier").forEach(x=>x.classList.remove("selected"));
+  ["meta","difficulty","catalog","router","verifyNode","escalateNode"].forEach(id=>document.getElementById(id)?.classList.remove("hot"));
+}
+function renderPlan(plan){
+  lastPlan=plan;escalated=false;clearHighlights();
+  const route=plan.route||[],decisions=plan.model_strategy?.decisions||[];
+  document.getElementById("policy").textContent=plan.model_strategy?.policy||"adaptive-model-v2-catalog";
+  route.forEach(r=>{
+    document.getElementById("d-"+r.domain)?.classList.add("active");
+    const o=document.getElementById("o-"+r.domain);if(o){o.classList.remove("dim");o.classList.add("active")}
+  });
+  const tiers=[...new Set(decisions.map(d=>d.tier))];tiers.forEach(t=>document.querySelector('.modelTier[data-tier="'+t+'"]')?.classList.add("selected"));
+  ["meta","difficulty","catalog","router"].forEach((id,i)=>setTimeout(()=>document.getElementById(id)?.classList.add("hot"),i*140));
+  const ex=document.getElementById("execution");
+  ex.innerHTML=decisions.length?decisions.map((d,i)=>`
+    <div class="execRow">
+      <b>${esc(d.agent_id)} · ${esc(d.domain)}</b>
+      <span class="wide">${esc(d.model)} <span class="muted">(${esc(d.selection_source||"configured")})</span></span>
+      <span class="tag ${esc(d.tier)}">${esc(d.tier)}</span>
+      <span class="tag effort">${esc(d.reasoning_effort)}</span>
+      <span>${Number(d.max_output_tokens||0).toLocaleString()} tok</span>
+    </div>`).join(""):'<div class="execRow"><span>No agent decisions returned.</span></div>';
+  const st=document.getElementById("strategy");
+  st.innerHTML=decisions.map(d=>`
+    <div class="strategyItem">
+      <div class="strategyHead"><b>${esc(d.agent_id)} · ${esc(d.domain.toUpperCase())}</b><span class="tag ${esc(d.tier)}">${esc(d.tier)}</span></div>
+      <small>${esc(d.capability)} → ${esc(d.model)}</small>
+      <div class="kv">
+        <span>Effort <b>${esc(d.reasoning_effort)}</b></span>
+        <span>Budget <b>${Number(d.max_output_tokens||0).toLocaleString()}</b></span>
+        <span>Complexity <b>${esc(d.complexity_score)}</b></span>
+        <span>Confidence <b>${esc(d.confidence)}</b></span>
+      </div>
+      <small>Fallback: ${d.escalation_models?.length?d.escalation_models.map(esc).join(" → "):"none required"}</small>
+    </div>`).join("")||'<div class="strategyItem"><small>No strategy returned.</small></div>';
+  logEvent("mission.accepted → "+route.map(r=>r.domain).join(" → "),"green");
+  decisions.forEach(d=>logEvent(`${d.agent_id} → ${d.model} · ${d.reasoning_effort} · ${d.max_output_tokens} tokens`,"cyan"));
+  logEvent("strategy.preview complete → no paid inference executed","green");
+}
+async function analyzeMission(){
+  const objective=document.getElementById("objective").value.trim(),priority=document.getElementById("priority").value;
+  if(objective.length<3)return;
+  const btn=document.getElementById("analyzeBtn");btn.disabled=true;btn.textContent="Analyzing…";
+  logEvent("meta_orchestrator.classifying objective");
+  try{
+    const r=await fetch(API+"/demo/strategy",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({objective,priority})});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const plan=await r.json();renderPlan(plan);logEvent("live.strategy source → Cloud Run","green");
+  }catch(e){
+    const plan=fallbackStrategy(objective,priority);renderPlan(plan);logEvent("live strategy unavailable → rendered local policy mirror","amber");
+  }finally{btn.disabled=false;btn.textContent="Analyze Mission"}
+}
+function simulateEscalation(){
+  if(!lastPlan){analyzeMission();return}
+  const decisions=lastPlan.model_strategy?.decisions||[];
+  const target=decisions.find(d=>d.escalation_models?.length)||decisions[0];
+  if(!target){return}
+  escalated=!escalated;
+  document.getElementById("verifyNode").classList.add("hot");document.getElementById("escalateNode").classList.add("hot");
+  if(escalated&&target.escalation_models?.length){
+    const next=target.escalation_models[0];
+    logEvent(`verifier.low_confidence → ${target.agent_id} escalated ${target.model} → ${next}`,"amber");
+    document.getElementById("strategy").insertAdjacentHTML("afterbegin",`<div class="strategyItem"><div class="strategyHead"><b>ESCALATION DEMO</b><span class="tag premium">bounded</span></div><small>${esc(target.agent_id)} moves to ${esc(next)} only after verification failure. Normal path remains cheapest qualified model.</small></div>`);
+  }else{
+    logEvent("escalation cleared → cheapest qualified model restored","green");
+  }
+}
+function resetView(){
+  lastPlan=null;escalated=false;clearHighlights();
+  document.getElementById("execution").innerHTML='<div class="execRow"><span class="muted">Waiting</span><span class="wide">Analyze a mission to see exact routing and model allocation.</span></div>';
+  document.getElementById("strategy").innerHTML='<div class="strategyItem"><small>Run Analyze Mission to inspect selected domains, agents, exact model IDs, effort levels and token budgets.</small></div>';
+  logEvent("dashboard.reset");
+}
+initDomains();
+logEvent("dashboard.ready → adaptive control-plane visualization loaded","green");
+checkRuntime();
+</script>
+</body>
+</html>
