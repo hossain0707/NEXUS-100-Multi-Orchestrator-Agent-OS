@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from nexus import __version__
 from nexus.api import router
 from nexus.mcp_server import mcp
+from nexus.model_catalog import model_catalog
 from nexus.persistence import init_db
 from nexus.security import SecurityMiddleware
 
@@ -16,6 +17,7 @@ mcp_app = mcp.streamable_http_app()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await model_catalog.refresh()
     # Mounted ASGI sub-app lifespans are not run by Starlette, so the parent
     # application owns the MCP session-manager lifecycle.
     async with mcp.session_manager.run():
