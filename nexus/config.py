@@ -23,10 +23,10 @@ class Settings(BaseSettings):
     # operators map them to concrete model IDs through environment variables.
     model_routing_enabled: bool = True
     backend_model_execution_enabled: bool = False
-    model_fast: str = "fast"
-    model_balanced: str = "balanced"
-    model_strong: str = "strong"
-    model_premium: str = "premium"
+    model_fast: str = "gpt-6-luna"
+    model_balanced: str = "gpt-5.6-terra"
+    model_strong: str = "gpt-6.1-sol"
+    model_premium: str = "gpt-6-astra"
     model_discovery_enabled: bool = True
     model_catalog_ttl_seconds: int = 3600
     max_model_escalations: int = 2
