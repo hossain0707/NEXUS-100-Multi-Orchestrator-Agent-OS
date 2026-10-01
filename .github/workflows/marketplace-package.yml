@@ -13,6 +13,16 @@ on:
       - "nexus/config.py"
       - "tests/test_marketplace_package.py"
       - "tests/test_api.py"
+  pull_request:
+    paths:
+      - "marketplace/**"
+      - "nexus/mcp_server.py"
+      - "nexus/main.py"
+      - "nexus/orchestrator.py"
+      - "nexus/security.py"
+      - "nexus/config.py"
+      - "tests/test_marketplace_package.py"
+      - "tests/test_api.py"
 
 jobs:
   package:
