@@ -25,7 +25,11 @@ app = FastAPI(
 )
 app.add_middleware(SecurityMiddleware)
 app.include_router(router)
-app.mount("/mcp", mcp.streamable_http_app())
+
+# FastMCP's Streamable HTTP ASGI app serves its protocol at its own /mcp
+# path. Mount it at the application root so the public endpoint is /mcp,
+# rather than accidentally nesting it as /mcp/mcp.
+app.mount("/", mcp.streamable_http_app())
 
 
 @app.get("/health")
