@@ -267,11 +267,6 @@ class AdaptiveModelRouter:
             "routing_enabled": settings.model_routing_enabled,
             "backend_execution_enabled": settings.backend_model_execution_enabled,
             "catalog_models": len(model_catalog.snapshot()),
-            "catalog_last_refresh": (
-                model_catalog.last_refresh.isoformat()
-                if model_catalog.last_refresh
-                else None
-            ),
             "decisions": decisions,
             "max_planned_output_tokens": sum(
                 decision["max_output_tokens"] for decision in decisions

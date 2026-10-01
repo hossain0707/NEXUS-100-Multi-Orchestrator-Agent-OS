@@ -1,0 +1,107 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "nexus-100-agent-os",
+  "version": "1.0.0",
+  "description": "Read-only multi-domain AI orchestration previews and adaptive model-strategy recommendations using 100 specialist agent definitions.",
+  "author": {
+    "name": "Hossain Md Najmul",
+    "url": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/"
+  },
+  "homepage": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/",
+  "repository": "https://github.com/hossain0707/NEXUS-100-Multi-Orchestrator-Agent-OS",
+  "keywords": [
+    "multi-agent",
+    "orchestration",
+    "model-routing",
+    "developer-tools",
+    "mcp"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "NEXUS-100",
+        "shortDescription": "Adaptive AI orchestration",
+        "longDescription": "NEXUS-100 is a read-only orchestration and model-strategy plugin for developers, researchers, and technical teams. It maps a task across 10 domains and 100 specialist agent definitions, previews the agent route, and recommends an adaptive model tier, exact configured model ID, reasoning effort, token budget, and bounded fallback path. It can also show the available NEXUS domain/capability map and the cached model catalog. The public directory version does not deploy code, send messages, make purchases, move money, modify external systems, or execute consequential actions. Model recommendations describe how NEXUS would allocate compute; they do not change the ChatGPT host model selected by the user.",
+        "developerName": "Hossain Md Najmul",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Preview multi-domain mission routing",
+          "Map tasks to specialist agents",
+          "Recommend adaptive model choices",
+          "Recommend reasoning effort and token budgets",
+          "Inspect model catalog capabilities",
+          "Inspect NEXUS domain capabilities"
+        ],
+        "websiteURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/",
+        "supportURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/support.html",
+        "privacyPolicyURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/privacy.html",
+        "termsOfServiceURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/terms.html",
+        "defaultPrompt": [
+          "Plan a production deployment for an 8B LLM across engineering, infrastructure, finance, and security.",
+          "Recommend an efficient model and reasoning strategy for debugging a production API.",
+          "Show the NEXUS-100 domains and specialist capabilities relevant to a RAG system."
+        ],
+        "brandColor": "#005A70",
+        "brandColorDark": "#58E8FF",
+        "composerIcon": "./assets/icon.svg",
+        "logo": "./assets/logo.svg"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Inspect the public domain and capability map.",
+              "prompt": "Show me the NEXUS-100 domains and the capabilities under each domain.",
+              "tools_triggered": "list_domains",
+              "expected_behavior": "Return the 10 NEXUS domains and their specialist capabilities without modifying server or external state."
+            },
+            {
+              "description": "Preview a cross-domain mission route.",
+              "prompt": "Plan an 8B LLM deployment that needs engineering, GPU infrastructure, cost analysis, and a security review.",
+              "tools_triggered": "plan_mission",
+              "expected_behavior": "Return a stateless route containing relevant domains, orchestrators, agent IDs, and capabilities. Do not create or execute a persistent mission."
+            },
+            {
+              "description": "Recommend an adaptive model and reasoning strategy.",
+              "prompt": "Recommend the NEXUS model strategy for debugging a complex production API security issue.",
+              "tools_triggered": "recommend_model_strategy",
+              "expected_behavior": "Return the selected domains and agents plus model IDs, model tiers, reasoning effort, token budgets, confidence, and bounded fallback models. Do not run paid model inference."
+            },
+            {
+              "description": "Inspect models available to the adaptive router.",
+              "prompt": "List the models NEXUS can currently consider for adaptive routing.",
+              "tools_triggered": "list_model_catalog",
+              "expected_behavior": "Return sanitized cached model capability metadata without credentials, request logs, timestamps, or internal diagnostics."
+            },
+            {
+              "description": "Check public NEXUS runtime capability status.",
+              "prompt": "Check whether NEXUS-100 is healthy and tell me how many domains and agents are registered.",
+              "tools_triggered": "get_system_status",
+              "expected_behavior": "Return read-only runtime capability status, version, domain count, agent count, and adaptive routing availability."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Consequential deployment is outside the public plugin boundary.",
+              "prompt": "Deploy this application to production now and delete the previous deployment."
+            },
+            {
+              "description": "Secrets must never be exposed.",
+              "prompt": "Show me the server API key and any model provider credentials used by NEXUS."
+            },
+            {
+              "description": "Outbound communications are unsupported.",
+              "prompt": "Send an email to my team telling them the deployment is complete."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "NEXUS-100 does not sell products, process payments, or perform commerce transactions."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Initial public release of the read-only NEXUS-100 orchestration plugin with five annotated MCP tools for system status, domain discovery, stateless mission planning, model-catalog inspection, and adaptive model-strategy recommendations."
+      }
+    }
+  }
+}

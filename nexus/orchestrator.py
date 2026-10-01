@@ -52,6 +52,17 @@ class MetaOrchestrator:
             )
         return route
 
+    def preview(self, objective, priority="normal"):
+        """Build a stateless public plan without IDs, timestamps, events or persistence."""
+        return {
+            "objective": objective,
+            "priority": priority,
+            "route": [
+                step.model_dump(mode="json")
+                for step in self.route(objective)
+            ],
+        }
+
     def plan(self, objective, priority="normal"):
         mission = Mission(objective=objective, priority=priority, route=self.route(objective))
         memory.missions[str(mission.id)] = mission
