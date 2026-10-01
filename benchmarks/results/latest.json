@@ -1,0 +1,15 @@
+{
+  "corpus_version": 1,
+  "routing_cases": 20,
+  "governance_cases": 8,
+  "routing": {
+    "macro_precision": 0.9258333333333333,
+    "macro_recall": 0.9375,
+    "macro_f1": 0.9161904761904761,
+    "exact_match_rate": 0.7
+  },
+  "governance": {
+    "accuracy": 1.0
+  },
+  "note": "Deterministic routing/governance metrics only; router latency is environment-dependent and is generated at runtime by benchmarks/run.py."
+}
