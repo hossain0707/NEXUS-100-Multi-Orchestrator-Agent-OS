@@ -37,7 +37,9 @@ jobs:
       - run: pytest -q tests/test_marketplace_package.py tests/test_api.py
       - run: python marketplace/build_release.py
       - name: Inspect package contents
-        run: python - <<'PY'
+        shell: bash
+        run: |
+          python - <<'PY'
           from pathlib import Path
           from zipfile import ZipFile
 
