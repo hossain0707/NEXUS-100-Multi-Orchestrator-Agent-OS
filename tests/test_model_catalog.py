@@ -1,3 +1,4 @@
+from nexus.config import settings
 from nexus.model_catalog import ModelCatalog, ModelProfile
 from nexus.model_router import ReasoningEffort
 
@@ -101,3 +102,24 @@ def test_catalog_escalation_only_returns_stronger_models():
         domain="engineering",
     )
     assert [model.id for model in models] == ["strong-model", "premium-model"]
+
+
+async def test_catalog_refresh_respects_ttl_without_provider_key():
+    catalog = ModelCatalog()
+    original_key = settings.llm_api_key
+    original_enabled = settings.model_discovery_enabled
+    try:
+        settings.llm_api_key = None
+        settings.model_discovery_enabled = True
+
+        first = await catalog.refresh()
+        first_attempt = catalog.last_attempt
+        assert first_attempt is not None
+        assert first["last_error"] == "model discovery requires NEXUS_LLM_API_KEY"
+
+        second = await catalog.refresh()
+        assert catalog.last_attempt == first_attempt
+        assert second["count"] == first["count"]
+    finally:
+        settings.llm_api_key = original_key
+        settings.model_discovery_enabled = original_enabled
