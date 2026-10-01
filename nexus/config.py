@@ -51,6 +51,11 @@ class Settings(BaseSettings):
         if self.environment == "production" and not self.api_token:
             raise ValueError("NEXUS_API_TOKEN is required in production")
 
+        if self.backend_model_execution_enabled and not self.api_token:
+            raise ValueError(
+                "NEXUS_API_TOKEN is required when backend model execution is enabled"
+            )
+
         if self.backend_model_execution_enabled and not self.llm_api_key:
             raise ValueError(
                 "NEXUS_LLM_API_KEY is required when backend model execution is enabled"
