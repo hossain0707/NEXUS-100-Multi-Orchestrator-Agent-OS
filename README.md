@@ -59,6 +59,22 @@ docker run --rm -p 8080:8080 nexus-100-agent-os
 
 The container is Cloud Run compatible and honors the platform-provided `PORT`.
 
+## Benchmarking
+
+NEXUS-100 includes a reproducible benchmark suite for the capabilities the current system can genuinely measure: **domain-routing quality, routing latency, and governance/approval correctness**.
+
+```bash
+python benchmarks/run.py
+```
+
+The current corpus contains **20 routing cases + 8 governance cases** spanning all 10 domains. Reported routing metrics include macro precision, macro recall, macro F1, exact-match rate, and deterministic router latency. Governance tests verify that sensitive or high-risk actions are sent to human approval.
+
+For a fair **ChatGPT-only vs ChatGPT + NEXUS-100** comparison, use the same task, same model, same available information, and blind-score the outputs on correctness, completeness, decomposition, routing, tool use, cross-domain coordination, safety/governance, and reproducibility.
+
+See [`benchmarks/README.md`](benchmarks/README.md) for the full A/B protocol and reproducible commands.
+
+> The benchmark does **not** claim that NEXUS-100 is more intelligent than ChatGPT. NEXUS-100 is currently an orchestration/control layer; answer-quality claims should only be published after controlled A/B runs.
+
 ## Live architecture UI
 
 https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/
