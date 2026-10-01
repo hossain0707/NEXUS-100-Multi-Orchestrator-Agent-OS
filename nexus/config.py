@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     llm_api_key: str | None = None
     llm_reasoning_parameter: str | None = None
 
+    # Set this only after the OpenAI plugin submission portal generates a
+    # domain-verification token. The public challenge route returns it verbatim.
+    openai_apps_challenge: str | None = None
+
     model_config = SettingsConfigDict(
         env_prefix="NEXUS_",
         env_file=".env",
