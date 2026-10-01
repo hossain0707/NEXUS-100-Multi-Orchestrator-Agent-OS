@@ -150,6 +150,7 @@ class ModelCatalog:
     def __init__(self):
         self._models: dict[str, ModelProfile] = {}
         self._last_refresh: datetime | None = None
+        self._last_attempt: datetime | None = None
         self._last_error: str | None = None
         self._seed_configured_models()
 
@@ -174,10 +175,15 @@ class ModelCatalog:
         return self._last_error
 
     @property
+    def last_attempt(self) -> datetime | None:
+        return self._last_attempt
+
+    @property
     def stale(self) -> bool:
-        if self._last_refresh is None:
+        reference = self._last_attempt or self._last_refresh
+        if reference is None:
             return True
-        return datetime.now(UTC) - self._last_refresh > timedelta(
+        return datetime.now(UTC) - reference > timedelta(
             seconds=getattr(settings, "model_catalog_ttl_seconds", 3600)
         )
 
@@ -192,6 +198,7 @@ class ModelCatalog:
             "models": [item.to_dict() for item in self.snapshot()],
             "count": len(self._models),
             "last_refresh": self._last_refresh.isoformat() if self._last_refresh else None,
+            "last_attempt": self._last_attempt.isoformat() if self._last_attempt else None,
             "last_error": self._last_error,
             "discovery_enabled": getattr(settings, "model_discovery_enabled", True),
         }
