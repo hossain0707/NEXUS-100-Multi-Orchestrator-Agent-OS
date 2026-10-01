@@ -178,7 +178,7 @@ class ModelCatalog:
         if self._last_refresh is None:
             return True
         return datetime.now(UTC) - self._last_refresh > timedelta(
-            seconds=settings.model_catalog_ttl_seconds
+            seconds=getattr(settings, "model_catalog_ttl_seconds", 3600)
         )
 
     def snapshot(self) -> list[ModelProfile]:
@@ -193,7 +193,7 @@ class ModelCatalog:
             "count": len(self._models),
             "last_refresh": self._last_refresh.isoformat() if self._last_refresh else None,
             "last_error": self._last_error,
-            "discovery_enabled": settings.model_discovery_enabled,
+            "discovery_enabled": getattr(settings, "model_discovery_enabled", True),
         }
 
     async def refresh(self) -> dict:
