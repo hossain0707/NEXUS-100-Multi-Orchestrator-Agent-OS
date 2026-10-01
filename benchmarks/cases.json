@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "routing_cases": [
+    {"id":"R01","prompt":"Research recent LLM benchmark methods","expected_domains":["research"]},
+    {"id":"R02","prompt":"Build and test a Python API for a software repository","expected_domains":["engineering","security"]},
+    {"id":"R03","prompt":"Analyze competitors, customers, market size and product strategy","expected_domains":["business"]},
+    {"id":"R04","prompt":"Create a RAG pipeline over a document dataset with vector search","expected_domains":["data"]},
+    {"id":"R05","prompt":"Deploy an LLM on GPU cloud infrastructure with low latency","expected_domains":["infrastructure","security"]},
+    {"id":"R06","prompt":"Perform a security audit for vulnerabilities and leaked secrets","expected_domains":["security"]},
+    {"id":"R07","prompt":"Summarize meeting notes and draft a presentation","expected_domains":["productivity"]},
+    {"id":"R08","prompt":"Estimate cloud cost, budget and monthly expense forecast","expected_domains":["finance","infrastructure"]},
+    {"id":"R09","prompt":"Improve my AI engineer resume, portfolio and interview preparation","expected_domains":["career"]},
+    {"id":"R10","prompt":"Plan personal travel and compare shopping options","expected_domains":["personal"]},
+    {"id":"R11","prompt":"Research an 8B LLM deployment, estimate GPU cost and review security risk","expected_domains":["research","infrastructure","finance","security"]},
+    {"id":"R12","prompt":"Build a production RAG API using document data and deploy it to cloud","expected_domains":["engineering","data","infrastructure","security"]},
+    {"id":"R13","prompt":"Analyze a dataset and prepare a business market report","expected_domains":["data","business"]},
+    {"id":"R14","prompt":"Research papers about model serving latency and GPU infrastructure","expected_domains":["research","infrastructure"]},
+    {"id":"R15","prompt":"Debug an API vulnerability in production deployment code","expected_domains":["engineering","security","infrastructure"]},
+    {"id":"R16","prompt":"Prepare a customer presentation with product competitor analysis","expected_domains":["productivity","business"]},
+    {"id":"R17","prompt":"Forecast infrastructure budget for Kubernetes GPU servers","expected_domains":["finance","infrastructure"]},
+    {"id":"R18","prompt":"Review my CV for an AI job and summarize the improvements","expected_domains":["career","productivity"]},
+    {"id":"R19","prompt":"Research vector database benchmarks for a RAG system","expected_domains":["research","data"]},
+    {"id":"R20","prompt":"Plan a household budget and personal shopping comparison","expected_domains":["personal","finance"]}
+  ],
+  "governance_cases": [
+    {"id":"G01","scopes":["READ"],"risk":"low","requires_approval":false},
+    {"id":"G02","scopes":["ANALYZE"],"risk":"low","requires_approval":false},
+    {"id":"G03","scopes":["PROPOSE"],"risk":"medium","requires_approval":false},
+    {"id":"G04","scopes":["WRITE"],"risk":"low","requires_approval":true},
+    {"id":"G05","scopes":["EXECUTE"],"risk":"medium","requires_approval":true},
+    {"id":"G06","scopes":["DEPLOY"],"risk":"low","requires_approval":true},
+    {"id":"G07","scopes":["READ"],"risk":"high","requires_approval":true},
+    {"id":"G08","scopes":["ANALYZE"],"risk":"critical","requires_approval":true}
+  ]
+}
