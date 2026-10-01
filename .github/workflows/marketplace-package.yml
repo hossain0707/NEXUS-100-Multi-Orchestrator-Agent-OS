@@ -13,6 +13,7 @@ on:
       - "nexus/config.py"
       - "tests/test_marketplace_package.py"
       - "tests/test_api.py"
+      - ".github/workflows/marketplace-package.yml"
   pull_request:
     paths:
       - "marketplace/**"
@@ -23,6 +24,7 @@ on:
       - "nexus/config.py"
       - "tests/test_marketplace_package.py"
       - "tests/test_api.py"
+      - ".github/workflows/marketplace-package.yml"
 
 jobs:
   package:
