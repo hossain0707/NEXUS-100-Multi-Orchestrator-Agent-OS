@@ -119,11 +119,11 @@ button,input,textarea,select{font:inherit}
         <div id="execution" class="execution"><div class="execRow"><span class="muted">Waiting</span><span class="wide">Analyze a mission to see exact routing and model allocation.</span></div></div>
         <div class="flowLabel">QUALITY + GOVERNANCE</div>
         <div class="verify">
-          <div id="verifyNode" class="node"><b>VERIFIER / CRITIC</b><small>confidence · contradictions · missing work · quality gate</small></div>
-          <div id="escalateNode" class="node"><b>BOUNDED ESCALATION</b><small>only move to stronger models when needed · max 2 by default</small></div>
+          <div id="verifyNode" class="node"><b>PLANNED QUALITY VERIFIER</b><small>future quality gate · not active in the current backend executor</small></div>
+          <div id="escalateNode" class="node"><b>BOUNDED PROVIDER FALLBACK</b><small>current executor escalates after provider/model-attempt failure · max 2 by default</small></div>
         </div>
         <div class="arrow">↓</div>
-        <div class="node"><b>FINAL SYNTHESIS + AUDIT</b><small>merge agent outputs · policy check · token telemetry · trace</small></div>
+        <div class="node"><b>RESULTS + AUDIT TRACE</b><small>per-agent outputs when backend execution is enabled · public plugin remains read-only</small></div>
       </div>
     </main>
 
@@ -136,7 +136,7 @@ button,input,textarea,select{font:inherit}
           <button id="analyzeBtn" class="primary" onclick="analyzeMission()">Analyze Mission</button>
         </div>
         <div class="row">
-          <button onclick="simulateEscalation()">Simulate Escalation</button>
+          <button onclick="simulateEscalation()">Simulate Provider Fallback</button>
           <button onclick="resetView()">Reset View</button>
         </div>
         <small id="modeNote" class="muted">This preview performs no paid model inference.</small>
@@ -313,10 +313,10 @@ function simulateEscalation(){
   document.getElementById("verifyNode").classList.add("hot");document.getElementById("escalateNode").classList.add("hot");
   if(escalated&&target.escalation_models?.length){
     const next=target.escalation_models[0];
-    logEvent(`verifier.low_confidence → ${target.agent_id} escalated ${target.model} → ${next}`,"amber");
-    document.getElementById("strategy").insertAdjacentHTML("afterbegin",`<div class="strategyItem"><div class="strategyHead"><b>ESCALATION DEMO</b><span class="tag premium">bounded</span></div><small>${esc(target.agent_id)} moves to ${esc(next)} only after verification failure. Normal path remains cheapest qualified model.</small></div>`);
+    logEvent(`model_attempt_failed → ${target.agent_id} fallback ${target.model} → ${next}`,"amber");
+    document.getElementById("strategy").insertAdjacentHTML("afterbegin",`<div class="strategyItem"><div class="strategyHead"><b>ESCALATION DEMO</b><span class="tag premium">bounded</span></div><small>${esc(target.agent_id)} moves to ${esc(next)} only after a provider/model-attempt failure. Normal path remains the selected qualified model.</small></div>`);
   }else{
-    logEvent("escalation cleared → cheapest qualified model restored","green");
+    logEvent("provider fallback cleared → selected model restored","green");
   }
 }
 function resetView(){
