@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nexus-100-agent-os"
-version = "0.5.0"
+version = "0.6.0"
 description = "Governed ChatGPT-native AI Agent OS with 10 domain orchestrators, 100 specialist agents and MCP"
 requires-python = ">=3.11"
 dependencies = [
