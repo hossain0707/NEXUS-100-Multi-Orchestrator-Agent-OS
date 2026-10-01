@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -72,6 +73,14 @@ async def health():
 @app.get("/ready")
 async def ready():
     return {"status": "ready"}
+
+
+@app.get("/.well-known/openai-apps-challenge", response_class=PlainTextResponse)
+async def openai_apps_challenge():
+    """Serve the exact OpenAI directory domain-verification token when configured."""
+    if not settings.openai_apps_challenge:
+        return PlainTextResponse("", status_code=404)
+    return PlainTextResponse(settings.openai_apps_challenge)
 
 
 @app.get("/status")
