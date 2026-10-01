@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "nexus-100-agent-os",
-  "version": "1.0.0",
-  "description": "Read-only multi-domain AI orchestration previews and adaptive model-strategy recommendations using 100 specialist agent definitions.",
+  "version": "1.0.1",
+  "description": "Read-only multi-domain orchestration previews and adaptive backend-model strategy recommendations for ChatGPT and Codex.",
   "author": {
     "name": "Hossain Md Najmul",
     "url": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/"
@@ -20,25 +20,26 @@
     "com.openai": {
       "interface": {
         "displayName": "NEXUS-100",
-        "shortDescription": "Adaptive AI orchestration",
-        "longDescription": "NEXUS-100 is a read-only orchestration and model-strategy plugin for developers, researchers, and technical teams. It maps a task across 10 domains and 100 specialist agent definitions, previews the agent route, and recommends an adaptive model tier, exact configured model ID, reasoning effort, token budget, and bounded fallback path. It can also show the available NEXUS domain/capability map and the cached model catalog. The public directory version does not deploy code, send messages, make purchases, move money, modify external systems, or execute consequential actions. Model recommendations describe how NEXUS would allocate compute; they do not change the ChatGPT host model selected by the user.",
+        "shortDescription": "Adaptive orchestration plans",
+        "longDescription": "NEXUS-100 is a read-only orchestration and planning plugin for developers, researchers, and technical teams. It maps a user objective across 10 domains and exactly 100 specialist agent definitions, previews the ordered domain/agent route, and recommends how optional NEXUS-managed backend inference would allocate a concrete model ID, reasoning effort, output-token budget, and bounded fallback path. It can also show the fixed NEXUS capability map, sanitized model-catalog metadata, and public runtime status. The public plugin does not create tracked missions, deploy code, send messages, make purchases, move money, modify repositories or cloud resources, or perform other consequential actions. Backend paid inference is disabled by default and is not invoked by any public MCP tool. NEXUS model recommendations do not and cannot silently change the host model selected by the user in ChatGPT.",
         "developerName": "Hossain Md Najmul",
         "category": "Developer Tools",
         "capabilities": [
           "Preview multi-domain mission routing",
-          "Map tasks to specialist agents",
-          "Recommend adaptive model choices",
+          "Map objectives to NEXUS specialist agents",
+          "Recommend optional backend model allocation",
           "Recommend reasoning effort and token budgets",
-          "Inspect model catalog capabilities",
-          "Inspect NEXUS domain capabilities"
+          "Inspect sanitized NEXUS model profiles",
+          "Inspect NEXUS domains and capabilities",
+          "Check public NEXUS runtime status"
         ],
         "websiteURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/",
         "supportURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/support.html",
         "privacyPolicyURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/privacy.html",
         "termsOfServiceURL": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/terms.html",
         "defaultPrompt": [
-          "Plan a production deployment for an 8B LLM across engineering, infrastructure, finance, and security.",
-          "Recommend an efficient model and reasoning strategy for debugging a production API.",
+          "Preview how NEXUS would route an 8B LLM production deployment across the relevant domains.",
+          "Recommend a NEXUS backend model and reasoning strategy for a complex API security debugging task.",
           "Show the NEXUS-100 domains and specialist capabilities relevant to a RAG system."
         ],
         "brandColor": "#005A70",
@@ -100,7 +101,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Initial public release of the read-only NEXUS-100 orchestration plugin with five annotated MCP tools for system status, domain discovery, stateless mission planning, model-catalog inspection, and adaptive model-strategy recommendations."
+        "release_notes": "Submission-readiness update: strengthened typed MCP schemas and descriptions, preserved five read-only public tools, separated public MCP access from the protected REST control plane, and hardened release-package validation."
       }
     }
   }

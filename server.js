@@ -1,3 +1,7 @@
+// Legacy standalone MCP development harness.
+// The production OpenAI public plugin uses nexus/main.py + nexus/mcp_server.py.
+// Keep this file for local SDK experiments; do not treat its tool surface as the directory contract.
+
 import { createServer } from "node:http";
 import { randomUUID } from "node:crypto";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";

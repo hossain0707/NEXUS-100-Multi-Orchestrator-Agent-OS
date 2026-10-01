@@ -203,7 +203,10 @@ class ModelCatalog:
             "discovery_enabled": getattr(settings, "model_discovery_enabled", True),
         }
 
-    async def refresh(self) -> dict:
+    async def refresh(self, *, force: bool = False) -> dict:
+        if not force and not self.stale:
+            return self.public_snapshot()
+        self._last_attempt = datetime.now(UTC)
         if not settings.model_discovery_enabled:
             return self.public_snapshot()
         if not settings.llm_api_key:

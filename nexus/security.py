@@ -8,7 +8,20 @@ from nexus.config import settings
 
 
 class SecurityMiddleware(BaseHTTPMiddleware):
-    """Minimal deployment boundary: bearer auth when configured, request IDs, body limits."""
+    """Deployment boundary for control-plane and MCP requests.
+
+    The REST control plane uses NEXUS_API_TOKEN when configured (and production
+    startup already requires that token). The public directory MCP endpoint is
+    intentionally independent: set NEXUS_MCP_API_TOKEN only for a private MCP
+    deployment. This prevents enabling REST authentication from accidentally
+    making the public read-only plugin unreachable.
+    """
+
+    @staticmethod
+    def _authorized(request, token: str) -> bool:
+        supplied = request.headers.get("authorization", "")
+        expected = f"Bearer {token}"
+        return hmac.compare_digest(supplied, expected)
 
     async def dispatch(self, request, call_next):
         request_id = request.headers.get("x-request-id") or str(uuid.uuid4())
@@ -32,16 +45,19 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                     status_code=413,
                 )
 
-        protected = request.url.path.startswith(("/api/", "/mcp"))
-        if protected and settings.api_token:
-            supplied = request.headers.get("authorization", "")
-            expected = f"Bearer {settings.api_token}"
-            if not hmac.compare_digest(supplied, expected):
-                return JSONResponse(
-                    {"error": "unauthorized", "request_id": request_id},
-                    status_code=401,
-                    headers={"WWW-Authenticate": "Bearer"},
-                )
+        path = request.url.path
+        token = None
+        if path.startswith("/api/"):
+            token = settings.api_token
+        elif path.startswith("/mcp"):
+            token = settings.mcp_api_token
+
+        if token and not self._authorized(request, token):
+            return JSONResponse(
+                {"error": "unauthorized", "request_id": request_id},
+                status_code=401,
+                headers={"WWW-Authenticate": "Bearer"},
+            )
 
         response = await call_next(request)
         response.headers["X-Request-ID"] = request_id
