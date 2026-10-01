@@ -59,6 +59,36 @@ def test_api_end_to_end():
         assert initialized.status_code == 200
         assert initialized.json()["result"]["serverInfo"]["name"] == "NEXUS-100"
 
+        tool_list = client.post(
+            "/mcp/",
+            headers={
+                "Accept": "application/json, text/event-stream",
+                "Content-Type": "application/json",
+                "Host": "localhost",
+            },
+            json={
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "tools/list",
+                "params": {},
+            },
+        )
+        assert tool_list.status_code == 200
+        tools = tool_list.json()["result"]["tools"]
+        names = {tool["name"] for tool in tools}
+        assert names == {
+            "get_system_status",
+            "list_domains",
+            "plan_mission",
+            "list_model_catalog",
+            "recommend_model_strategy",
+        }
+        for tool in tools:
+            annotations = tool["annotations"]
+            assert annotations["readOnlyHint"] is True
+            assert annotations["destructiveHint"] is False
+            assert annotations["openWorldHint"] is False
+
         agents = client.get("/api/v1/agents")
         assert agents.status_code == 200
         assert agents.json()["count"] == 100
