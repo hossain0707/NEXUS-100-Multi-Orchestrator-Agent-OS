@@ -1,3 +1,5 @@
+from typing import Literal
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -25,7 +27,7 @@ DASHBOARD_ORIGINS = [
 
 class StrategyPreviewIn(BaseModel):
     objective: str = Field(min_length=3, max_length=2000)
-    priority: str = "normal"
+    priority: Literal["low", "normal", "high", "critical"] = "normal"
 
 
 # Build the mounted MCP application once. This initializes its session manager
