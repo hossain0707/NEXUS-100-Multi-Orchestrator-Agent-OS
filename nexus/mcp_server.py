@@ -1,6 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
 
+from nexus.config import settings
 from nexus.memory import memory
 from nexus.model_router import model_router
 from nexus.orchestrator import orchestrator
@@ -32,7 +33,8 @@ def get_system_status() -> dict:
         "domains": len(DOMAIN_CAPABILITIES),
         "agents": len(registry.agents),
         "missions": len(memory.missions),
-        "adaptive_model_routing": True,
+        "adaptive_model_routing": settings.model_routing_enabled,
+        "backend_model_execution": settings.backend_model_execution_enabled,
     }
 
 
