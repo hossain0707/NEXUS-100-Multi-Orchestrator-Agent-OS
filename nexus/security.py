@@ -13,8 +13,24 @@ class SecurityMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         request_id = request.headers.get("x-request-id") or str(uuid.uuid4())
         length = request.headers.get("content-length")
-        if length and int(length) > 1_000_000:
-            return JSONResponse({"error": "payload_too_large"}, status_code=413)
+        if length:
+            try:
+                content_length = int(length)
+            except ValueError:
+                return JSONResponse(
+                    {"error": "invalid_content_length", "request_id": request_id},
+                    status_code=400,
+                )
+            if content_length < 0:
+                return JSONResponse(
+                    {"error": "invalid_content_length", "request_id": request_id},
+                    status_code=400,
+                )
+            if content_length > 1_000_000:
+                return JSONResponse(
+                    {"error": "payload_too_large", "request_id": request_id},
+                    status_code=413,
+                )
 
         protected = request.url.path.startswith(("/api/", "/mcp"))
         if protected and settings.api_token:

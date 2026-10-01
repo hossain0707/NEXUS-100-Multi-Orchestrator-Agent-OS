@@ -45,6 +45,19 @@ def test_api_end_to_end():
         assert agents.status_code == 200
         assert agents.json()["count"] == 100
 
+        strategy = client.post(
+            "/api/v1/model-routing/recommend",
+            json={
+                "objective": (
+                    "Deploy an LLM API on GPU infrastructure with a security review"
+                )
+            },
+        )
+        assert strategy.status_code == 200
+        strategy_body = strategy.json()
+        assert strategy_body["model_strategy"]["policy"] == "adaptive-model-v1"
+        assert strategy_body["model_strategy"]["decisions"]
+
         created = client.post(
             "/api/v1/missions",
             json={

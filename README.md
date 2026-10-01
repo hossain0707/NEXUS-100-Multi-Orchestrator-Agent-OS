@@ -2,7 +2,7 @@
 
 NEXUS-100 is evolving from an architecture preview into a **Python multi-orchestrator AI Agent OS**: 10 domain orchestrators, exactly 100 capability-scoped specialist agents, a Meta Orchestrator, governance/approval boundaries, REST control-plane APIs, and a Streamable HTTP MCP interface for ChatGPT.
 
-> **Current implementation boundary:** the control plane, registry, routing, mission state, policy primitives, REST API and MCP surface are implemented in Python. External provider execution (GitHub/Gmail/cloud), durable PostgreSQL/Redis infrastructure, OAuth/RBAC, and model-backed reasoning are the next production layers; the project does not pretend those side effects already exist.
+> **Current implementation boundary:** the control plane, 100-agent registry, mission routing, adaptive model/effort planning, bounded backend-model execution, policy primitives, REST API and MCP surface are implemented in Python. External application providers (GitHub/Gmail/cloud), durable PostgreSQL/Redis infrastructure, OAuth/RBAC, and full model-backed semantic task routing remain future production layers; the project does not pretend those side effects already exist.
 
 ## Runtime architecture
 
@@ -14,6 +14,10 @@ ChatGPT / MCP Clients / REST Clients
          Meta Orchestrator
                │
        Capability Router
+               │
+   Adaptive Model + Effort Router
+   fast / balanced / strong / premium
+   low / medium / high / extra-high
                │
  ┌─────────────┼────────────────────┐
  │ 10 domain orchestrators          │
@@ -31,6 +35,9 @@ ChatGPT / MCP Clients / REST Clients
 
 - `nexus/registry.py` — deterministic 100-agent capability registry
 - `nexus/orchestrator.py` — objective routing and mission planning
+- `nexus/model_router.py` — per-agent model tier, reasoning effort, token budget and escalation policy
+- `nexus/llm.py` — optional OpenAI-compatible backend model adapter with usage telemetry
+- `nexus/executor.py` — bounded adaptive execution with model escalation on provider failures
 - `nexus/policy.py` — governed autonomy boundary
 - `nexus/memory.py` — storage interface/development event store
 - `nexus/api.py` — REST control-plane API
@@ -58,6 +65,36 @@ docker run --rm -p 8080:8080 nexus-100-agent-os
 ```
 
 The container is Cloud Run compatible and honors the platform-provided `PORT`.
+
+## Adaptive model and reasoning routing
+
+NEXUS-100 keeps the existing **10 domain orchestrators and all 100 specialist agents**. Model choice is an execution policy above the agents, so an agent's identity/capability is not tied to one expensive model.
+
+For each selected specialist, `adaptive-model-v1` assigns:
+
+- a model tier: **fast → balanced → strong → premium**
+- reasoning effort: **low → medium → high → extra-high**
+- a bounded output-token budget
+- a confidence score and routing rationale
+- up to `NEXUS_MAX_MODEL_ESCALATIONS` stronger fallback models
+
+Simple productivity/personal tasks can stay on the fast tier, while complex cross-domain, production, or security work is promoted to stronger compute. Security has a stronger minimum tier. Backend execution records provider-reported input/output token usage and only escalates to a stronger configured model when an execution attempt fails.
+
+The concrete model IDs are **not hard-coded**. Operators map each tier using:
+
+`NEXUS_MODEL_FAST`, `NEXUS_MODEL_BALANCED`, `NEXUS_MODEL_STRONG`, and `NEXUS_MODEL_PREMIUM`.
+
+Backend model execution is disabled by default to prevent accidental API spend. Enabling it requires both `NEXUS_API_TOKEN` and `NEXUS_LLM_API_KEY`. This keeps paid execution behind the existing authenticated API boundary.
+
+Read-only recommendation endpoint:
+
+```text
+POST /api/v1/model-routing/recommend
+```
+
+The MCP server also exposes `recommend_model_strategy`, so ChatGPT can inspect NEXUS's selected agents, model tiers, effort levels, and token budgets without triggering paid backend inference.
+
+> **ChatGPT host-model boundary:** an MCP server cannot silently change the model selected by the user in the ChatGPT interface. Automatic model switching applies to NEXUS-managed backend model calls. When NEXUS is used only as a ChatGPT MCP tool, ChatGPT remains the host reasoning model while NEXUS supplies orchestration/model recommendations.
 
 ## Benchmarking
 
