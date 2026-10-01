@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "nexus-100": {
+      "type": "streamable-http",
+      "url": "https://nexus-100-multi-orchestrator-agent-os-393741258321.asia-northeast3.run.app/mcp/"
+    }
+  }
+}
