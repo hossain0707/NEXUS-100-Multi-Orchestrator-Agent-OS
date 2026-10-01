@@ -9,7 +9,10 @@ on:
       - "nexus/mcp_server.py"
       - "nexus/main.py"
       - "nexus/orchestrator.py"
+      - "nexus/security.py"
+      - "nexus/config.py"
       - "tests/test_marketplace_package.py"
+      - "tests/test_api.py"
 
 jobs:
   package:
@@ -20,10 +23,22 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
+      - run: ruff check nexus tests marketplace/build_release.py
       - run: pytest -q tests/test_marketplace_package.py tests/test_api.py
       - run: python marketplace/build_release.py
+      - name: Inspect package contents
+        run: python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          archives = list(Path("marketplace/dist").glob("nexus-100-plugin-*.zip"))
+          assert len(archives) == 1, archives
+          with ZipFile(archives[0]) as z:
+              print("\n".join(z.namelist()))
+              assert z.testzip() is None
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: nexus-100-marketplace
-          path: marketplace/dist/nexus-100-plugin-1.0.0.zip
+          path: marketplace/dist/nexus-100-plugin-*.zip
           if-no-files-found: error
