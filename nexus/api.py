@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from nexus.executor import executor
 from nexus.llm import LLMNotConfigured
 from nexus.memory import memory
+from nexus.model_catalog import model_catalog
 from nexus.model_router import model_router
 from nexus.orchestrator import orchestrator
 from nexus.persistence import load_mission, save_mission
@@ -31,8 +32,14 @@ async def agents():
     }
 
 
+@router.get("/models")
+async def models():
+    return model_catalog.public_snapshot()
+
+
 @router.post("/model-routing/recommend")
 async def recommend_model_strategy(body: ModelStrategyIn):
+    await model_catalog.refresh()
     route = orchestrator.route(body.objective)
     return {
         "route": [step.model_dump(mode="json") for step in route],
