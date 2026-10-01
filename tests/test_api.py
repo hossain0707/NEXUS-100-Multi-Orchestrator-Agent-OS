@@ -15,6 +15,24 @@ def test_api_end_to_end():
         assert ready.status_code == 200
         assert ready.json()["status"] == "ready"
 
+        public_status = client.get("/status")
+        assert public_status.status_code == 200
+        assert public_status.json()["agents"] == 100
+        assert public_status.json()["adaptive_model_routing"] is True
+
+        preview = client.post(
+            "/demo/strategy",
+            json={
+                "objective": (
+                    "Research an LLM deployment, estimate GPU cost, and review security"
+                )
+            },
+        )
+        assert preview.status_code == 200
+        preview_body = preview.json()
+        assert preview_body["route"]
+        assert preview_body["model_strategy"]["policy"] == "adaptive-model-v2-catalog"
+
         # Exercise a real MCP Streamable HTTP initialize request instead of
         # treating the endpoint like a browser page.
         initialized = client.post(
