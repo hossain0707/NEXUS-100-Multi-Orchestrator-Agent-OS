@@ -56,7 +56,7 @@ pytest -q
 uvicorn nexus.main:app --reload --port 8080
 ```
 
-Endpoints: `/health`, `/api/v1/agents`, `/api/v1/missions`, `/api/v1/events`, and Streamable HTTP MCP at `/mcp`.
+Endpoints: `/health`, the protected `/api/v1/*` control plane, public read-only dashboard endpoints, and Streamable HTTP MCP at `/mcp/`.
 
 ## Docker / Cloud Run
 
@@ -85,7 +85,7 @@ NEXUS no longer depends on only four hard-coded model names. When a provider key
 
 The catalog is refreshed at startup and lazily after its TTL expires. `GET /api/v1/models` and the MCP tool `list_model_catalog` expose the cached catalog without triggering paid inference.
 
-Backend model execution is disabled by default to prevent accidental API spend. Enabling it requires both `NEXUS_API_TOKEN` and `NEXUS_LLM_API_KEY`. This keeps paid execution behind the existing authenticated API boundary.
+Backend model execution is disabled by default to prevent accidental API spend. Enabling it requires both `NEXUS_API_TOKEN` and `NEXUS_LLM_API_KEY`. The internal REST control plane and public MCP authentication are separated: production REST uses `NEXUS_API_TOKEN`, while `NEXUS_MCP_API_TOKEN` is optional and should remain unset for the public read-only directory endpoint.
 
 Read-only recommendation endpoint:
 
@@ -138,26 +138,27 @@ See [`benchmarks/results/chatgpt_vs_nexus.md`](benchmarks/results/chatgpt_vs_nex
 
 ## Public ChatGPT / Codex plugin package
 
-The repository now includes an upload-ready portable Agent Plugins package at [`marketplace/nexus-100/`](marketplace/nexus-100/). The public directory surface is intentionally **read-only**: it exposes status, domain discovery, stateless mission planning, model-catalog inspection, and adaptive model-strategy recommendations. Stateful control-plane and consequential operations remain outside the public MCP surface.
+The repository includes a portable Agent Plugins package at [`marketplace/nexus-100/`](marketplace/nexus-100/). The public MCP surface is intentionally **read-only** and exposes exactly five tools: status, domain discovery, stateless mission planning, sanitized model-catalog inspection, and adaptive backend-model strategy recommendations. Stateful control-plane and consequential operations remain outside the public MCP surface.
 
-Build the submission ZIP with:
+Build and verify the submission ZIP with:
 
 ```bash
 python marketplace/build_release.py
 ```
 
-This creates `marketplace/dist/nexus-100-plugin-1.0.0.zip` with `plugin.json`, `mcp.json`, and square SVG branding assets at the ZIP root. A GitHub Actions workflow also builds the same artifact from `main`.
+This creates `marketplace/dist/nexus-100-plugin-1.0.1.zip`. The build is whitelist-based and reopens the archive to verify its contents and CRC. The only ZIP members are `plugin.json`, `mcp.json`, `assets/icon.svg`, and `assets/logo.svg`; repository source, tests, caches, `.env` files, and credentials are not bundled.
 
-Public listing URLs are hosted by GitHub Pages:
+The production MCP URL declared by the package is:
 
-- Website: `/`
-- Support: `/support.html`
-- Privacy: `/privacy.html`
-- Terms: `/terms.html`
+```text
+https://nexus-100-multi-orchestrator-agent-os-393741258321.asia-northeast3.run.app/mcp/
+```
 
-The MCP production server includes a domain-verification endpoint at `/.well-known/openai-apps-challenge`. After the OpenAI submission portal generates the challenge token, set `NEXUS_OPENAI_APPS_CHALLENGE` on Cloud Run to that exact value and redeploy.
+OpenAI's current remote-MCP submission flow requires a production HTTPS endpoint, domain verification, a current successful tool scan, the four public listing URLs, exactly five positive and three negative review cases, release notes, and a real reviewer-accessible demo recording. Publisher identity verification and portal attestations must be completed by the repository owner. Projects with EU data residency are currently not eligible for MCP public review.
 
-The only review materials that cannot be pre-generated are the verified publisher identity, the portal-generated domain token, and a real reviewer-accessible demo recording. A recording script is included at [`marketplace/nexus-100/DEMO_RECORDING_SCRIPT.md`](marketplace/nexus-100/DEMO_RECORDING_SCRIPT.md).
+The domain-verification route is implemented at `/.well-known/openai-apps-challenge`, but no token is hard-coded. Set `NEXUS_OPENAI_APPS_CHALLENGE` only after the submission portal generates the real token.
+
+See [`docs/MCP_DEPLOYMENT.md`](docs/MCP_DEPLOYMENT.md) and [`marketplace/nexus-100/README.md`](marketplace/nexus-100/README.md) for the reproducible deployment/submission checklist. A real demo script is included at [`marketplace/nexus-100/DEMO_RECORDING_SCRIPT.md`](marketplace/nexus-100/DEMO_RECORDING_SCRIPT.md).
 
 ## Live architecture UI
 
