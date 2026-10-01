@@ -22,6 +22,7 @@ def test_api_end_to_end():
             headers={
                 "Accept": "application/json, text/event-stream",
                 "Content-Type": "application/json",
+                "Host": "localhost",
             },
             json={
                 "jsonrpc": "2.0",
