@@ -8,10 +8,16 @@ from nexus.mcp_server import mcp
 from nexus.persistence import init_db
 from nexus.security import SecurityMiddleware
 
+# Build the mounted MCP application once. This initializes its session manager
+# before the parent FastAPI lifespan starts.
+mcp_app = mcp.streamable_http_app()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    # Mounted ASGI sub-app lifespans are not run by Starlette, so the parent
+    # application owns the MCP session-manager lifecycle.
     async with mcp.session_manager.run():
         yield
 
@@ -26,17 +32,21 @@ app = FastAPI(
 app.add_middleware(SecurityMiddleware)
 app.include_router(router)
 
-# FastMCP's Streamable HTTP ASGI app serves its protocol at its own /mcp
-# path. Mount it at the application root so the public endpoint is /mcp,
-# rather than accidentally nesting it as /mcp/mcp.
-app.mount("/", mcp.streamable_http_app())
-
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "service": "nexus-100-agent-os", "version": __version__}
+    return {
+        "status": "ok",
+        "service": "nexus-100-agent-os",
+        "version": __version__,
+    }
 
 
 @app.get("/ready")
 async def ready():
     return {"status": "ready"}
+
+
+# Keep this catch-all mount after the REST and health routes. The inner MCP
+# transport serves at "/", yielding the public Streamable HTTP endpoint /mcp/.
+app.mount("/mcp", mcp_app)
