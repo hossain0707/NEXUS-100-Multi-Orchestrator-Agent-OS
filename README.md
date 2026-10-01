@@ -85,6 +85,19 @@ See [`benchmarks/README.md`](benchmarks/README.md) for the full A/B protocol and
 
 > The benchmark does **not** claim that NEXUS-100 is more intelligent than ChatGPT. NEXUS-100 is currently an orchestration/control layer; answer-quality claims should only be published after controlled A/B runs.
 
+## ChatGPT vs NEXUS-100 comparison
+
+A controlled **routing-only** comparison is now included using the same 20 benchmark prompts and gold domain labels.
+
+| System | Macro precision | Macro recall | Macro F1 | Exact-match rate |
+|---|---:|---:|---:|---:|
+| ChatGPT-only baseline | **1.000** | **0.975** | **0.983** | **95.0%** |
+| NEXUS-100 router | 0.926 | 0.938 | 0.916 | 70.0% |
+
+This result shows that the current deterministic NEXUS keyword router is not yet more accurate than ChatGPT on this routing corpus. NEXUS-100's current advantage is structured orchestration, explicit agent/domain control, governance, mission tracking, and MCP integration—not superior raw routing intelligence.
+
+See [`benchmarks/results/chatgpt_vs_nexus.md`](benchmarks/results/chatgpt_vs_nexus.md) for methodology, predictions, limitations, and interpretation.
+
 ## Live architecture UI
 
 https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/

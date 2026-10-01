@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-01",
+  "benchmark_type": "routing_only",
+  "corpus": "benchmarks/cases.json",
+  "chatgpt_baseline": {
+    "model": "GPT-5.6 Sol",
+    "macro_precision": 1.0,
+    "macro_recall": 0.975,
+    "macro_f1": 0.9833333333333334,
+    "exact_match_rate": 0.95,
+    "predictions": {
+      "R01":["research"],
+      "R02":["engineering"],
+      "R03":["business"],
+      "R04":["data"],
+      "R05":["infrastructure","security"],
+      "R06":["security"],
+      "R07":["productivity"],
+      "R08":["finance","infrastructure"],
+      "R09":["career"],
+      "R10":["personal"],
+      "R11":["research","infrastructure","finance","security"],
+      "R12":["engineering","data","infrastructure","security"],
+      "R13":["data","business"],
+      "R14":["research","infrastructure"],
+      "R15":["engineering","security","infrastructure"],
+      "R16":["productivity","business"],
+      "R17":["finance","infrastructure"],
+      "R18":["career","productivity"],
+      "R19":["research","data"],
+      "R20":["personal","finance"]
+    }
+  },
+  "nexus_100": {
+    "macro_precision": 0.9258333333333333,
+    "macro_recall": 0.9375,
+    "macro_f1": 0.9161904761904761,
+    "exact_match_rate": 0.7,
+    "governance_accuracy": 1.0
+  },
+  "limitations": [
+    "This is routing-only, not general answer quality.",
+    "The ChatGPT baseline is a single pass, not an independently replicated API evaluation.",
+    "The corpus contains 20 routing cases and should be expanded before drawing broad conclusions."
+  ]
+}
