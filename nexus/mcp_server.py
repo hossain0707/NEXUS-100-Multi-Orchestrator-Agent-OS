@@ -1,4 +1,5 @@
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
 from nexus.memory import memory
 from nexus.orchestrator import orchestrator
@@ -12,6 +13,13 @@ mcp = FastMCP(
     stateless_http=True,
     json_response=True,
     streamable_http_path="/",
+    # NEXUS is deployed behind Cloud Run, whose managed ingress already
+    # terminates TLS and controls Host routing. Disabling SDK-level DNS
+    # rebinding checks here avoids rejecting the real Cloud Run hostname
+    # while keeping the deployment architecture explicit.
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=False,
+    ),
 )
 
 
