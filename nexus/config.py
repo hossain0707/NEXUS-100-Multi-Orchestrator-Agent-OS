@@ -6,7 +6,10 @@ class Settings(BaseSettings):
     app_name: str = "NEXUS-100 AI Agent OS"
     environment: str = "development"
     api_token: str | None = None
-    database_url: str = "sqlite+aiosqlite:///./nexus.db"
+    # Cloud Run containers have a writable /tmp filesystem. This default keeps
+    # zero-config deployments bootable; production should override this with
+    # a durable PostgreSQL/Cloud SQL URL.
+    database_url: str = "sqlite+aiosqlite:////tmp/nexus.db"
     redis_url: str | None = None
     github_token: str | None = None
     max_orchestrator_hops: int = 10
