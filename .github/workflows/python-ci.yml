@@ -1,9 +1,9 @@
 name: Python Agent OS CI
 on:
   push:
-    paths: ["nexus/**","tests/**","pyproject.toml","Dockerfile",".github/workflows/python-ci.yml"]
+    paths: ["nexus/**","tests/**","benchmarks/**","pyproject.toml","Dockerfile",".github/workflows/python-ci.yml"]
   pull_request:
-    paths: ["nexus/**","tests/**","pyproject.toml","Dockerfile"]
+    paths: ["nexus/**","tests/**","benchmarks/**","pyproject.toml","Dockerfile"]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,4 +14,5 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: ruff check nexus tests
       - run: pytest -q
+      - run: python benchmarks/run.py
       - run: docker build -t nexus-100-agent-os:test .
