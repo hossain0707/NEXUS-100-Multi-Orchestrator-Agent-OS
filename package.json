@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "NEXUS-100 production-oriented MCP gateway for ChatGPT",
+  "description": "Legacy standalone MCP development harness; the production public plugin uses the Python FastAPI/FastMCP service",
   "engines": { "node": ">=20" },
   "scripts": {
     "start": "node server.js",
