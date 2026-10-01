@@ -6,6 +6,9 @@ class Settings(BaseSettings):
     app_name: str = "NEXUS-100 AI Agent OS"
     environment: str = "development"
     api_token: str | None = None
+    # Optional separate bearer token for private MCP deployments. Leave unset for
+    # the public read-only directory MCP endpoint.
+    mcp_api_token: str | None = None
 
     # Cloud Run containers have a writable /tmp filesystem. This default keeps
     # zero-config deployments bootable; production should override this with
