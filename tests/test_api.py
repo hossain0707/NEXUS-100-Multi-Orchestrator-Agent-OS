@@ -56,10 +56,17 @@ def test_api_end_to_end():
         assert challenge.headers["content-type"].startswith("text/plain")
         settings.openai_apps_challenge = None
 
-        public_status = client.get("/status")
+        public_status = client.get(
+            "/status",
+            headers={"Origin": "https://hossain0707.github.io"},
+        )
         assert public_status.status_code == 200
         assert public_status.json()["agents"] == 100
         assert public_status.json()["adaptive_model_routing"] is True
+        assert (
+            public_status.headers["access-control-allow-origin"]
+            == "https://hossain0707.github.io"
+        )
 
         preview = client.post(
             "/demo/strategy",
@@ -151,6 +158,27 @@ def test_api_end_to_end():
         assert result["structuredContent"]["route"]
         assert len(memory.missions) == missions_before
         assert len(memory.events) == events_before
+
+        invalid_call = client.post(
+            "/mcp/",
+            headers=_mcp_headers(),
+            json={
+                "jsonrpc": "2.0",
+                "id": 4,
+                "method": "tools/call",
+                "params": {
+                    "name": "plan_mission",
+                    "arguments": {
+                        "objective": "x",
+                        "priority": "impossible",
+                    },
+                },
+            },
+        )
+        assert invalid_call.status_code == 200
+        invalid_result = invalid_call.json()["result"]
+        assert invalid_result.get("isError") is True
+        assert invalid_result["content"]
 
         agents = client.get("/api/v1/agents")
         assert agents.status_code == 200
