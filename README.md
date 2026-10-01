@@ -67,7 +67,17 @@ NEXUS-100 includes a reproducible benchmark suite for the capabilities the curre
 python benchmarks/run.py
 ```
 
-The current corpus contains **20 routing cases + 8 governance cases** spanning all 10 domains. Reported routing metrics include macro precision, macro recall, macro F1, exact-match rate, and deterministic router latency. Governance tests verify that sensitive or high-risk actions are sent to human approval.
+The current corpus contains **20 routing cases + 8 governance cases** spanning all 10 domains.
+
+| Current deterministic benchmark | Result |
+|---|---:|
+| Routing macro precision | **0.926** |
+| Routing macro recall | **0.938** |
+| Routing macro F1 | **0.916** |
+| Routing exact-match rate | **70.0%** |
+| Governance approval accuracy | **100.0%** |
+
+Reported routing metrics measure domain-selection behavior. Router latency is generated at runtime because it depends on the execution environment. Governance tests verify that sensitive or high-risk actions are sent to human approval. Machine-readable and Markdown results are stored under [`benchmarks/results/`](benchmarks/results/).
 
 For a fair **ChatGPT-only vs ChatGPT + NEXUS-100** comparison, use the same task, same model, same available information, and blind-score the outputs on correctness, completeness, decomposition, routing, tool use, cross-domain coordination, safety/governance, and reproducibility.
 
