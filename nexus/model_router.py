@@ -2,6 +2,7 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 
 from nexus.config import settings
+from nexus.model_catalog import model_catalog
 
 
 class ModelTier(str, Enum):
@@ -31,6 +32,7 @@ class ModelDecision:
     confidence: float
     escalation_models: tuple[str, ...]
     rationale: tuple[str, ...]
+    selection_source: str
 
     def to_dict(self) -> dict:
         data = asdict(self)
@@ -47,6 +49,13 @@ TIER_ORDER = [
     ModelTier.strong,
     ModelTier.premium,
 ]
+
+TIER_MIN_QUALITY = {
+    ModelTier.fast: 0.65,
+    ModelTier.balanced: 0.78,
+    ModelTier.strong: 0.90,
+    ModelTier.premium: 0.97,
+}
 
 DOMAIN_FLOOR = {
     "productivity": ModelTier.fast,
@@ -89,10 +98,10 @@ HIGH_STAKES_TERMS = {
 
 
 class AdaptiveModelRouter:
-    policy_version = "adaptive-model-v1"
+    policy_version = "adaptive-model-v2-catalog"
 
     @staticmethod
-    def _model_for(tier: ModelTier) -> str:
+    def _fallback_model_for(tier: ModelTier) -> str:
         return {
             ModelTier.fast: settings.model_fast,
             ModelTier.balanced: settings.model_balanced,
@@ -113,7 +122,12 @@ class AdaptiveModelRouter:
     def _tier_index(tier: ModelTier) -> int:
         return TIER_ORDER.index(tier)
 
-    def score(self, objective: str, domain_count: int, priority: str = "normal") -> tuple[float, list[str]]:
+    def score(
+        self,
+        objective: str,
+        domain_count: int,
+        priority: str = "normal",
+    ) -> tuple[float, list[str]]:
         text = objective.lower()
         words = text.split()
         score = 0.12
@@ -165,7 +179,49 @@ class AdaptiveModelRouter:
             return ModelTier.strong
         return ModelTier.premium
 
-    def choose(self, objective: str, step, domain_count: int, priority: str = "normal") -> ModelDecision:
+    def _select_model(
+        self,
+        tier: ModelTier,
+        effort: ReasoningEffort,
+        domain: str,
+    ) -> tuple[str, tuple[str, ...], str]:
+        selected = model_catalog.choose(
+            minimum_quality=TIER_MIN_QUALITY[tier],
+            reasoning_effort=effort.value,
+            domain=domain,
+        )
+
+        if selected is not None:
+            stronger = model_catalog.stronger_than(
+                selected,
+                reasoning_effort=effort.value,
+                domain=domain,
+            )
+            fallbacks = tuple(
+                profile.id
+                for profile in stronger[: settings.max_model_escalations]
+            )
+            return selected.id, fallbacks, selected.source
+
+        model = self._fallback_model_for(tier)
+        later_models = [
+            self._fallback_model_for(candidate)
+            for candidate in TIER_ORDER[self._tier_index(tier) + 1 :]
+        ]
+        fallbacks = tuple(
+            item
+            for index, item in enumerate(later_models)
+            if item != model and item not in later_models[:index]
+        )[: settings.max_model_escalations]
+        return model, fallbacks, "tier-fallback"
+
+    def choose(
+        self,
+        objective: str,
+        step,
+        domain_count: int,
+        priority: str = "normal",
+    ) -> ModelDecision:
         score, reasons = self.score(objective, domain_count, priority)
         requested = self._score_tier(score)
         floor = DOMAIN_FLOOR.get(step.domain, ModelTier.balanced)
@@ -175,16 +231,11 @@ class AdaptiveModelRouter:
             reasons.append(f"{step.domain} domain floor")
 
         effort = self._effort(score)
-        model = self._model_for(tier)
-        later_models = [
-            self._model_for(candidate)
-            for candidate in TIER_ORDER[self._tier_index(tier) + 1 :]
-        ]
-        escalation_models = tuple(
-            item
-            for index, item in enumerate(later_models)
-            if item not in later_models[:index]
-        )[: settings.max_model_escalations]
+        model, escalation_models, source = self._select_model(
+            tier,
+            effort,
+            step.domain,
+        )
 
         thresholds = [0.30, 0.58, 0.82]
         distance = min(abs(score - threshold) for threshold in thresholds)
@@ -202,6 +253,7 @@ class AdaptiveModelRouter:
             confidence=round(confidence, 3),
             escalation_models=escalation_models,
             rationale=tuple(reasons),
+            selection_source=source,
         )
 
     def plan(self, objective: str, route: list, priority: str = "normal") -> dict:
@@ -214,6 +266,12 @@ class AdaptiveModelRouter:
             "policy": self.policy_version,
             "routing_enabled": settings.model_routing_enabled,
             "backend_execution_enabled": settings.backend_model_execution_enabled,
+            "catalog_models": len(model_catalog.snapshot()),
+            "catalog_last_refresh": (
+                model_catalog.last_refresh.isoformat()
+                if model_catalog.last_refresh
+                else None
+            ),
             "decisions": decisions,
             "max_planned_output_tokens": sum(
                 decision["max_output_tokens"] for decision in decisions

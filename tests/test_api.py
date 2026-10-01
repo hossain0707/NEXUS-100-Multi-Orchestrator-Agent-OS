@@ -55,8 +55,12 @@ def test_api_end_to_end():
         )
         assert strategy.status_code == 200
         strategy_body = strategy.json()
-        assert strategy_body["model_strategy"]["policy"] == "adaptive-model-v1"
+        assert strategy_body["model_strategy"]["policy"] == "adaptive-model-v2-catalog"
         assert strategy_body["model_strategy"]["decisions"]
+
+        models = client.get("/api/v1/models")
+        assert models.status_code == 200
+        assert "models" in models.json()
 
         created = client.post(
             "/api/v1/missions",

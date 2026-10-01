@@ -54,7 +54,8 @@ class LLMProvider:
         # Different providers expose reasoning controls under different names.
         # Operators opt in by configuring the provider-specific parameter name.
         if settings.llm_reasoning_parameter:
-            payload[settings.llm_reasoning_parameter] = reasoning_effort.value
+            effort_value = "xhigh" if reasoning_effort is ReasoningEffort.extra_high else reasoning_effort.value
+            payload[settings.llm_reasoning_parameter] = effort_value
 
         timeout = httpx.Timeout(90.0, connect=10.0)
         async with httpx.AsyncClient(timeout=timeout) as client:

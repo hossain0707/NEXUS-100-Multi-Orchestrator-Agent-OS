@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     model_balanced: str = "balanced"
     model_strong: str = "strong"
     model_premium: str = "premium"
+    model_discovery_enabled: bool = True
+    model_catalog_ttl_seconds: int = 3600
     max_model_escalations: int = 2
 
     max_output_tokens_low: int = 800

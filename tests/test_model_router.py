@@ -1,3 +1,4 @@
+from nexus.model_catalog import ModelProfile, model_catalog
 from nexus.model_router import ModelTier, ReasoningEffort, model_router
 from nexus.orchestrator import orchestrator
 from nexus.registry import registry
@@ -43,3 +44,38 @@ def test_escalation_is_bounded_and_only_moves_up():
     for decision in strategy["decisions"]:
         assert len(decision["escalation_models"]) <= 2
         assert decision["model"] not in decision["escalation_models"]
+
+
+def test_router_uses_exact_discovered_model_id():
+    original = model_catalog.snapshot()
+    try:
+        model_catalog.replace_for_test(
+            [
+                ModelProfile(
+                    id="provider-fast-v1",
+                    family="fast",
+                    quality=0.72,
+                    speed=0.95,
+                    cost_index=0.4,
+                    reasoning_efforts=("low", "medium"),
+                    source="provider",
+                ),
+                ModelProfile(
+                    id="provider-strong-v2",
+                    family="strong",
+                    quality=0.95,
+                    speed=0.70,
+                    cost_index=2.0,
+                    reasoning_efforts=("low", "medium", "high", "extra_high"),
+                    source="provider",
+                ),
+            ]
+        )
+        objective = "Summarize meeting notes"
+        route = orchestrator.route(objective)
+        strategy = model_router.plan(objective, route)
+        decision = strategy["decisions"][0]
+        assert decision["model"] == "provider-fast-v1"
+        assert decision["selection_source"] == "provider"
+    finally:
+        model_catalog.replace_for_test(original)

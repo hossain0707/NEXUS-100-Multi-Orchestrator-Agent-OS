@@ -35,7 +35,8 @@ ChatGPT / MCP Clients / REST Clients
 
 - `nexus/registry.py` — deterministic 100-agent capability registry
 - `nexus/orchestrator.py` — objective routing and mission planning
-- `nexus/model_router.py` — per-agent model tier, reasoning effort, token budget and escalation policy
+- `nexus/model_catalog.py` — dynamic provider model discovery, capability/cost/speed profiles, specialization-aware selection
+- `nexus/model_router.py` — per-agent model tier, concrete model, reasoning effort, token budget and escalation policy
 - `nexus/llm.py` — optional OpenAI-compatible backend model adapter with usage telemetry
 - `nexus/executor.py` — bounded adaptive execution with model escalation on provider failures
 - `nexus/policy.py` — governed autonomy boundary
@@ -70,7 +71,7 @@ The container is Cloud Run compatible and honors the platform-provided `PORT`.
 
 NEXUS-100 keeps the existing **10 domain orchestrators and all 100 specialist agents**. Model choice is an execution policy above the agents, so an agent's identity/capability is not tied to one expensive model.
 
-For each selected specialist, `adaptive-model-v1` assigns:
+For each selected specialist, `adaptive-model-v2-catalog` assigns:
 
 - a model tier: **fast → balanced → strong → premium**
 - reasoning effort: **low → medium → high → extra-high**
@@ -80,9 +81,9 @@ For each selected specialist, `adaptive-model-v1` assigns:
 
 Simple productivity/personal tasks can stay on the fast tier, while complex cross-domain, production, or security work is promoted to stronger compute. Security has a stronger minimum tier. Backend execution records provider-reported input/output token usage and only escalates to a stronger configured model when an execution attempt fails.
 
-The concrete model IDs are **not hard-coded**. Operators map each tier using:
+NEXUS no longer depends on only four hard-coded model names. When a provider key is configured it calls the provider's standard `/models` endpoint, builds a cached catalog of the exact model IDs available to that account, classifies recognized general/specialist families, and selects the least-cost qualified model for each agent. Domain specialists are preferred when available. The four tier settings remain only as safe fallbacks when provider discovery is unavailable.
 
-`NEXUS_MODEL_FAST`, `NEXUS_MODEL_BALANCED`, `NEXUS_MODEL_STRONG`, and `NEXUS_MODEL_PREMIUM`.
+The catalog is refreshed at startup and lazily after its TTL expires. `GET /api/v1/models` and the MCP tool `list_model_catalog` expose the cached catalog without triggering paid inference.
 
 Backend model execution is disabled by default to prevent accidental API spend. Enabling it requires both `NEXUS_API_TOKEN` and `NEXUS_LLM_API_KEY`. This keeps paid execution behind the existing authenticated API boundary.
 
@@ -92,7 +93,7 @@ Read-only recommendation endpoint:
 POST /api/v1/model-routing/recommend
 ```
 
-The MCP server also exposes `recommend_model_strategy`, so ChatGPT can inspect NEXUS's selected agents, model tiers, effort levels, and token budgets without triggering paid backend inference.
+The MCP server exposes `recommend_model_strategy`, so ChatGPT can inspect NEXUS's selected agents, exact selected model IDs, model tiers, effort levels, token budgets, fallback models, and selection source without triggering paid backend inference.
 
 > **ChatGPT host-model boundary:** an MCP server cannot silently change the model selected by the user in the ChatGPT interface. Automatic model switching applies to NEXUS-managed backend model calls. When NEXUS is used only as a ChatGPT MCP tool, ChatGPT remains the host reasoning model while NEXUS supplies orchestration/model recommendations.
 

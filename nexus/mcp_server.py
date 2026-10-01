@@ -3,6 +3,7 @@ from mcp.server.transport_security import TransportSecuritySettings
 
 from nexus.config import settings
 from nexus.memory import memory
+from nexus.model_catalog import model_catalog
 from nexus.model_router import model_router
 from nexus.orchestrator import orchestrator
 from nexus.registry import DOMAIN_CAPABILITIES, registry
@@ -35,6 +36,7 @@ def get_system_status() -> dict:
         "missions": len(memory.missions),
         "adaptive_model_routing": settings.model_routing_enabled,
         "backend_model_execution": settings.backend_model_execution_enabled,
+        "model_catalog_size": len(model_catalog.snapshot()),
     }
 
 
@@ -61,11 +63,18 @@ def run_mission(
 
 
 @mcp.tool()
-def recommend_model_strategy(
+def list_model_catalog() -> dict:
+    """List the cached provider model catalog used for adaptive routing."""
+    return model_catalog.public_snapshot()
+
+
+@mcp.tool()
+async def recommend_model_strategy(
     objective: str,
     priority: str = "normal",
 ) -> dict:
-    """Recommend model tier, reasoning effort and token budget per selected agent."""
+    """Recommend concrete model, reasoning effort and token budget per selected agent."""
+    await model_catalog.refresh()
     route = orchestrator.route(objective)
     return {
         "route": [step.model_dump(mode="json") for step in route],
