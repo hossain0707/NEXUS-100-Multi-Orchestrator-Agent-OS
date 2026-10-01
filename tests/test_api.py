@@ -4,8 +4,8 @@ from nexus.main import app
 
 
 def test_api_end_to_end():
-    # The MCP Streamable HTTP session manager is intentionally single-lifecycle.
-    # Keep one application lifespan for the complete integration scenario.
+    # The MCP session manager is intentionally single-lifecycle. Keep one
+    # application lifespan for the complete REST + MCP integration scenario.
     with TestClient(app) as client:
         health = client.get("/health")
         assert health.status_code == 200
@@ -15,11 +15,30 @@ def test_api_end_to_end():
         assert ready.status_code == 200
         assert ready.json()["status"] == "ready"
 
-        # /mcp must resolve to the MCP transport itself, not a Starlette 404.
-        # A plain browser-style GET is not a valid MCP protocol request, so
-        # any protocol-level response is acceptable here; routing 404 is not.
-        mcp_response = client.get("/mcp")
-        assert mcp_response.status_code != 404
+        # Exercise a real MCP Streamable HTTP initialize request instead of
+        # treating the endpoint like a browser page.
+        initialized = client.post(
+            "/mcp/",
+            headers={
+                "Accept": "application/json, text/event-stream",
+                "Content-Type": "application/json",
+            },
+            json={
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "initialize",
+                "params": {
+                    "protocolVersion": "2025-06-18",
+                    "capabilities": {},
+                    "clientInfo": {
+                        "name": "nexus-ci",
+                        "version": "1.0",
+                    },
+                },
+            },
+        )
+        assert initialized.status_code == 200
+        assert initialized.json()["result"]["serverInfo"]["name"] == "NEXUS-100"
 
         agents = client.get("/api/v1/agents")
         assert agents.status_code == 200
