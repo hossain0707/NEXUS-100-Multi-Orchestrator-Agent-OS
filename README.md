@@ -136,6 +136,29 @@ This result shows that the current deterministic NEXUS keyword router is not yet
 
 See [`benchmarks/results/chatgpt_vs_nexus.md`](benchmarks/results/chatgpt_vs_nexus.md) for methodology, predictions, limitations, and interpretation.
 
+## Public ChatGPT / Codex plugin package
+
+The repository now includes an upload-ready portable Agent Plugins package at [`marketplace/nexus-100/`](marketplace/nexus-100/). The public directory surface is intentionally **read-only**: it exposes status, domain discovery, stateless mission planning, model-catalog inspection, and adaptive model-strategy recommendations. Stateful control-plane and consequential operations remain outside the public MCP surface.
+
+Build the submission ZIP with:
+
+```bash
+python marketplace/build_release.py
+```
+
+This creates `marketplace/dist/nexus-100-plugin-1.0.0.zip` with `plugin.json`, `mcp.json`, and square SVG branding assets at the ZIP root. A GitHub Actions workflow also builds the same artifact from `main`.
+
+Public listing URLs are hosted by GitHub Pages:
+
+- Website: `/`
+- Support: `/support.html`
+- Privacy: `/privacy.html`
+- Terms: `/terms.html`
+
+The MCP production server includes a domain-verification endpoint at `/.well-known/openai-apps-challenge`. After the OpenAI submission portal generates the challenge token, set `NEXUS_OPENAI_APPS_CHALLENGE` on Cloud Run to that exact value and redeploy.
+
+The only review materials that cannot be pre-generated are the verified publisher identity, the portal-generated domain token, and a real reviewer-accessible demo recording. A recording script is included at [`marketplace/nexus-100/DEMO_RECORDING_SCRIPT.md`](marketplace/nexus-100/DEMO_RECORDING_SCRIPT.md).
+
 ## Live architecture UI
 
 https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/
