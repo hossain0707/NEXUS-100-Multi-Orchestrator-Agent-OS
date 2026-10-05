@@ -4,7 +4,7 @@
   "version": "1.0.1",
   "description": "Read-only multi-domain orchestration previews and adaptive backend-model strategy recommendations for ChatGPT and Codex.",
   "author": {
-    "name": "Hossain Md Najmul",
+    "name": "Md Najmul Hossain",
     "url": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/"
   },
   "homepage": "https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/",
@@ -22,7 +22,7 @@
         "displayName": "NEXUS-100",
         "shortDescription": "Adaptive orchestration plans",
         "longDescription": "NEXUS-100 is a read-only orchestration and planning plugin for developers, researchers, and technical teams. It maps a user objective across 10 domains and exactly 100 specialist agent definitions, previews the ordered domain/agent route, and recommends how optional NEXUS-managed backend inference would allocate a concrete model ID, reasoning effort, output-token budget, and bounded fallback path. It can also show the fixed NEXUS capability map, sanitized model-catalog metadata, and public runtime status. The public plugin does not create tracked missions, deploy code, send messages, make purchases, move money, modify repositories or cloud resources, or perform other consequential actions. Backend paid inference is disabled by default and is not invoked by any public MCP tool. NEXUS model recommendations do not and cannot silently change the host model selected by the user in ChatGPT.",
-        "developerName": "Hossain Md Najmul",
+        "developerName": "Md Najmul Hossain",
         "category": "Developer Tools",
         "capabilities": [
           "Preview multi-domain mission routing",

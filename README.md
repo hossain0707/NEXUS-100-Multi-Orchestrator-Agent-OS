@@ -490,9 +490,9 @@ For collaboration, licensing, or commercial-use discussions, contact the reposit
 
 ## License and Ownership
 
-**Copyright (c) 2026 Hossain Md Najmul. All rights reserved.**
+**Copyright (c) 2026 Md Najmul Hossain. All rights reserved.**
 
-NEXUS-100 remains the intellectual property of **Hossain Md Najmul**. This repository is distributed under the project-specific proprietary [LICENSE](LICENSE). No open-source license is granted unless the copyright holder provides separate written permission.
+NEXUS-100 remains the intellectual property of **Md Najmul Hossain**. This repository is distributed under the project-specific proprietary [LICENSE](LICENSE). No open-source license is granted unless the copyright holder provides separate written permission.
 
 Third-party dependencies remain subject to their own respective licenses.
 
@@ -504,6 +504,6 @@ Third-party dependencies remain subject to their own respective licenses.
 
 Governed orchestration. Explicit routing. Adaptive compute. Honest boundaries.
 
-Maintained by **Hossain Md Najmul**
+Maintained by **Md Najmul Hossain**
 
 </div>
