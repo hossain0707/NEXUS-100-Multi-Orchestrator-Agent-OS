@@ -1,0 +1,29 @@
+NEXUS-100 Proprietary License
+
+Copyright (c) 2026 Hossain Md Najmul
+All rights reserved.
+
+This repository, including its source code, documentation, branding, architecture,
+designs, configuration, examples, and related materials (collectively, the
+"Software"), is the intellectual property of Hossain Md Najmul unless a third-party
+component is explicitly identified with its own license.
+
+No permission is granted to copy, modify, distribute, sublicense, sell, commercially
+exploit, relicense, or create derivative works from the Software without prior
+written permission from the copyright holder, except for rights that cannot be
+restricted under applicable law or rights required by the terms of the hosting
+platform for normal repository access and operation.
+
+Public availability of the repository does not place the Software in the public
+domain and does not grant an open-source license.
+
+Third-party dependencies remain subject to their respective licenses.
+
+For licensing or commercial-use permission, contact the repository owner:
+https://github.com/hossain0707
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR
+ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH
+THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
