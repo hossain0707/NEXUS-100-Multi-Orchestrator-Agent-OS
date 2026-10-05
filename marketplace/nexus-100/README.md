@@ -106,7 +106,7 @@ If the OpenAI tool scan reports different behavior, fix the server and rescan ra
 The current manifest uses:
 
 ```text
-Hossain Md Najmul
+Md Najmul Hossain
 ```
 
 The OpenAI directory ultimately uses the verified developer/business identity selected in the portal. If that verified identity uses a different exact public name, update the manifest before final upload.
