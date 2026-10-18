@@ -1,7 +1,15 @@
+from dataclasses import asdict
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from nexus.executor import executor
+from nexus.gemini_free import (
+    GeminiDisabled,
+    GeminiUpstreamError,
+    complete as gemini_complete,
+    public_config as gemini_public_config,
+)
 from nexus.llm import LLMNotConfigured
 from nexus.memory import memory
 from nexus.model_catalog import model_catalog
@@ -22,6 +30,27 @@ class MissionIn(BaseModel):
 class ModelStrategyIn(BaseModel):
     objective: str = Field(min_length=3, max_length=4000)
     priority: str = "normal"
+
+
+class GeminiSmokeIn(BaseModel):
+    prompt: str = Field(min_length=3, max_length=500)
+
+
+@router.get("/gemini/smoke-status")
+async def gemini_smoke_status():
+    """Authenticated REST status; no inference, no secrets."""
+    return gemini_public_config()
+
+
+@router.post("/gemini/smoke")
+async def gemini_smoke(body: GeminiSmokeIn):
+    """One bounded Gemini request; operator approval and REST auth required."""
+    try:
+        return asdict(await gemini_complete(body.prompt))
+    except GeminiDisabled as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except GeminiUpstreamError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
 @router.get("/agents")
