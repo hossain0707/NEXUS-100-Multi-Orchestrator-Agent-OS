@@ -1,8 +1,9 @@
 # Google AI Builder Cup 2026 — NEXUS-100 Submission
 
 **Team:** NEXUS-100 AI Innovators  
-**Challenge:** Future of Work  
+**Challenge:** Future of Work & Enterprise Productivity  
 **Team lead:** Md Najmul Hossain  
+**Team members:** Dalju Hika Barki; Mohammed Ahanaf Akif Rahman  
 **Source:** https://github.com/hossain0707/NEXUS-100-Multi-Orchestrator-Agent-OS  
 **Public console:** https://hossain0707.github.io/NEXUS-100-Multi-Orchestrator-Agent-OS/  
 **Cloud Run:** https://nexus-100-multi-orchestrator-agent-os-393741258321.asia-northeast3.run.app
