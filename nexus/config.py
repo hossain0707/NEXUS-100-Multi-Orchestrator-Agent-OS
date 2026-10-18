@@ -45,6 +45,12 @@ class Settings(BaseSettings):
     llm_api_key: str | None = None
     llm_reasoning_parameter: str | None = None
 
+    # Explicitly opt-in single-request Gemini smoke check; defaults safe/off.
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-2.5-flash-lite"
+    gemini_smoke_enabled: bool = False
+    gemini_free_tier_ack: bool = False
+
     # Set this only after the OpenAI plugin submission portal generates a
     # domain-verification token. The public challenge route returns it verbatim.
     openai_apps_challenge: str | None = None
@@ -69,6 +75,18 @@ class Settings(BaseSettings):
             raise ValueError(
                 "NEXUS_LLM_API_KEY is required when backend model execution is enabled"
             )
+
+        if self.gemini_smoke_enabled and not (
+            self.api_token and self.gemini_free_tier_ack and self.gemini_api_key
+        ):
+            raise ValueError(
+                "Gemini smoke requires REST auth token, free-tier acknowledgement, "
+                "and Gemini API key"
+            )
+        if self.gemini_smoke_enabled and self.gemini_model not in {
+            "gemini-2.5-flash-lite", "gemini-2.5-flash"
+        }:
+            raise ValueError("Gemini smoke model must be on the limited allowlist")
 
         models = {
             self.model_fast,
