@@ -131,6 +131,29 @@ def _profile_for(model_id: str, *, source: str, available: bool) -> ModelProfile
             available=available,
         )
 
+    # Gemini is accessible through Google's OpenAI-compatible REST endpoint.
+    # These are approximate routing POLICY scores, not measured model benchmarks.
+    # Free-tier availability and quotas vary by model, region and account.
+    if lower.startswith("gemini-"):
+        if "flash-lite" in lower:
+            family, quality, speed, cost_index = "fast", 0.72, 0.96, 0.4
+        elif "flash" in lower:
+            family, quality, speed, cost_index = "balanced", 0.91, 0.86, 0.9
+        elif "pro" in lower:
+            family, quality, speed, cost_index = "strong", 0.97, 0.55, 2.0
+        else:
+            family, quality, speed, cost_index = "general", 0.79, 0.70, 1.5
+        return ModelProfile(
+            id=model_id,
+            family=family,
+            quality=quality,
+            speed=speed,
+            cost_index=cost_index,
+            reasoning_efforts=REASONING_LEVELS,
+            source=source,
+            available=available,
+        )
+
     if lower.startswith("gpt-"):
         return ModelProfile(
             id=model_id,
